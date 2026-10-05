@@ -1,0 +1,473 @@
+import { message, isLanguage, type LocalizedText } from "../i18n";
+import {
+  CONTRACT,
+  DRIFT,
+  MAX_LEVEL,
+  MODE_LOCK,
+  RIVAL_BASE,
+  STEP_MS,
+  TOWERS,
+} from "./content";
+import {
+  MODES,
+  SHARES,
+  TOWER_IDS,
+  type ActionResult,
+  type GameAction,
+  type GameState,
+  type Mode,
+  type Operation,
+  type TowerId,
+  type Winner,
+} from "./types";
+
+const EPS = 1e-8;
+const clamp = (value: number, low: number, high: number) =>
+  Math.max(low, Math.min(high, value));
+const operation = (mode: Mode = "normal"): Operation => ({
+  mode,
+  instability: 0,
+  lock: 0,
+  recoveryEligible: false,
+});
+
+export function newGame(): GameState {
+  return {
+    schemaVersion: 2,
+    balanceVersion: 1,
+    magic: 0,
+    lifetimeMagic: 0,
+    activeSeconds: 0,
+    remainderMs: 0,
+    towers: {
+      wald: { ...operation(), level: 0 },
+      pilz: { ...operation(), level: 0 },
+      blitz: { ...operation(), level: 0 },
+    },
+    selected: "wald",
+    paused: true,
+    pauseReason: message("pause.waiting"),
+    hasCompletedRecovery: false,
+    contractsResolved: 0,
+    contract: {
+      phase: "locked",
+      number: 0,
+      remaining: 0,
+      allocation: 0,
+      playerDelivered: 0,
+      rivalDelivered: 0,
+      lastResult: null,
+    },
+    rival: { ...operation("rest"), allocation: 0, decisionIn: 5 },
+    log: [{ time: 0, text: message("log.begin") }],
+  };
+}
+
+export function addLog(s: GameState, text: LocalizedText) {
+  s.log.unshift({ time: s.activeSeconds, text });
+  s.log = s.log.slice(0, 8);
+}
+export function unlocked(s: GameState, id: TowerId) {
+  return (
+    s.lifetimeMagic + EPS >= TOWERS[id].threshold &&
+    (id !== "blitz" || s.towers.pilz.level > 0)
+  );
+}
+export function upgradeCost(s: GameState, id: TowerId) {
+  return Math.ceil(TOWERS[id].upgrade * 1.35 ** (s.towers[id].level - 1));
+}
+export function nominal(s: GameState, id: TowerId) {
+  const level = s.towers[id].level;
+  return level === 0
+    ? 0
+    : TOWERS[id].base *
+        1.18 ** (level - 1) *
+        (id === "wald" ? 1 + 0.25 * s.towers.pilz.level : 1);
+}
+export function factor(mode: Mode, instability: number) {
+  if (mode === "rest") return 0.2;
+  return mode === "high" ? 1.6 - 0.015 * instability : 1 - 0.0075 * instability;
+}
+export function production(s: GameState, id: TowerId) {
+  return nominal(s, id) * factor(s.towers[id].mode, s.towers[id].instability);
+}
+export function totalProduction(s: GameState) {
+  return TOWER_IDS.reduce((sum, id) => sum + production(s, id), 0);
+}
+export function introductionComplete(s: GameState) {
+  return (
+    TOWER_IDS.every((id) => s.towers[id].level > 0) &&
+    s.hasCompletedRecovery &&
+    s.contractsResolved > 0
+  );
+}
+
+// The mode factor is linear until instability reaches a boundary, then constant.
+// Integrating that piece exactly avoids frame-rate and threshold drift.
+export function integratedProduction(
+  op: Operation,
+  base: number,
+  seconds: number,
+) {
+  const drift = DRIFT[op.mode];
+  const boundaryTime =
+    drift > 0 ? (100 - op.instability) / drift : op.instability / -drift;
+  const changing = Math.min(seconds, Math.max(0, boundaryTime));
+  const endInstability = clamp(op.instability + drift * changing, 0, 100);
+  return (
+    base *
+    ((factor(op.mode, op.instability) + factor(op.mode, endInstability)) *
+      0.5 *
+      changing +
+      factor(op.mode, endInstability) * (seconds - changing))
+  );
+}
+function integratedPlayer(s: GameState, seconds: number) {
+  return TOWER_IDS.reduce(
+    (sum, id) =>
+      sum + integratedProduction(s.towers[id], nominal(s, id), seconds),
+    0,
+  );
+}
+function changeMode(op: Operation, mode: Mode) {
+  op.mode = mode;
+  op.lock = MODE_LOCK;
+  op.recoveryEligible = mode === "rest" && op.instability >= 40 - EPS;
+}
+
+export function checkMilestones(s: GameState) {
+  if (
+    s.contract.phase === "locked" &&
+    s.towers.pilz.level > 0 &&
+    s.hasCompletedRecovery
+  ) {
+    s.contract.phase = "preparing";
+    s.contract.remaining = CONTRACT.preparation;
+    s.contract.number = 1;
+    addLog(s, message("log.rivalArrives"));
+  }
+}
+
+export function applyAction(s: GameState, action: GameAction): ActionResult {
+  if (action.type === "select") {
+    s.selected = action.id;
+    return { ok: true };
+  }
+  if (s.paused)
+    return {
+      ok: false,
+      error: message("error.paused"),
+    };
+  switch (action.type) {
+    case "activate": {
+      const t = s.towers[action.id];
+      if (t.level > 0) return { ok: false, error: message("error.active") };
+      if (!unlocked(s, action.id))
+        return {
+          ok: false,
+          error: message("error.discovery"),
+        };
+      const cost = TOWERS[action.id].activation;
+      if (s.magic + EPS < cost)
+        return { ok: false, error: message("error.magic") };
+      s.magic = Math.max(0, s.magic - cost);
+      t.level = 1;
+      addLog(s, message("log.awaken", { tower: TOWERS[action.id].name }));
+      break;
+    }
+    case "upgrade": {
+      const t = s.towers[action.id];
+      if (!t.level || t.level >= MAX_LEVEL)
+        return { ok: false, error: message("error.upgrade") };
+      const cost = upgradeCost(s, action.id);
+      if (s.magic + EPS < cost)
+        return { ok: false, error: message("error.magic") };
+      s.magic = Math.max(0, s.magic - cost);
+      t.level++;
+      addLog(
+        s,
+        message("log.upgrade", {
+          tower: TOWERS[action.id].name,
+          level: t.level,
+        }),
+      );
+      break;
+    }
+    case "mode": {
+      const t = s.towers[action.id];
+      if (!t.level) return { ok: false, error: message("error.awaken") };
+      if (t.mode === action.mode) return { ok: true };
+      if (t.lock > EPS)
+        return {
+          ok: false,
+          error: message("error.modeLock", { seconds: Math.ceil(t.lock) }),
+        };
+      changeMode(t, action.mode);
+      break;
+    }
+    case "allocation":
+      if (s.contract.phase === "locked")
+        return { ok: false, error: message("error.contract") };
+      s.contract.allocation = action.share;
+      break;
+    default:
+      return {
+        ok: false,
+        error: message("error.windowAction"),
+      };
+  }
+  checkMilestones(s);
+  return { ok: true };
+}
+
+export function isGameAction(value: unknown): value is GameAction {
+  if (!value || typeof value !== "object") return false;
+  const v = value as Record<string, unknown>;
+  if (["resume", "pause", "retry-save", "new-game"].includes(String(v.type)))
+    return true;
+  if (v.type === "set-language") return isLanguage(v.language);
+  if (v.type === "allocation") return SHARES.includes(v.share as never);
+  if (!TOWER_IDS.includes(v.id as never)) return false;
+  if (["activate", "upgrade", "select"].includes(String(v.type))) return true;
+  return v.type === "mode" && MODES.includes(v.mode as never);
+}
+
+function decideRival(s: GameState) {
+  const r = s.rival;
+  let desired: Mode = r.mode;
+  if (s.contract.phase !== "active") desired = "rest";
+  else if (r.mode === "rest" && r.instability > 20 + EPS) desired = "rest";
+  else if (r.instability >= 70 - EPS) desired = "rest";
+  else if (r.mode === "high" && r.instability < 60 - EPS) desired = "high";
+  else if (
+    r.instability <= 40 + EPS &&
+    s.contract.rivalDelivered < s.contract.playerDelivered - EPS
+  )
+    desired = "high";
+  else desired = "normal";
+  if (desired !== r.mode && r.lock <= EPS) {
+    changeMode(r, desired);
+    if (s.contract.phase === "active")
+      addLog(
+        s,
+        desired === "high"
+          ? message("log.rivalHigh")
+          : desired === "rest"
+            ? message("log.rivalRest")
+            : message("log.rivalNormal"),
+      );
+  }
+  r.allocation =
+    s.contract.phase !== "active"
+      ? 0
+      : r.mode === "high"
+        ? 0.75
+        : r.mode === "rest"
+          ? 0.25
+          : 0.5;
+  r.decisionIn = 5;
+}
+
+function settleContract(s: GameState, winner: Winner) {
+  const c = s.contract;
+  const reward =
+    winner === "player"
+      ? CONTRACT.reward
+      : winner === "tie"
+        ? CONTRACT.reward / 2
+        : 0;
+  s.magic += reward;
+  s.contractsResolved++;
+  c.lastResult = {
+    number: c.number,
+    winner,
+    playerDelivered: Math.min(CONTRACT.target, c.playerDelivered),
+    rivalDelivered: Math.min(CONTRACT.target, c.rivalDelivered),
+    reward,
+  };
+  c.phase = "cooldown";
+  c.remaining = CONTRACT.cooldown;
+  c.allocation = 0;
+  addLog(
+    s,
+    winner === "player"
+      ? message("log.win", { reward })
+      : winner === "tie"
+        ? message("log.tie", { reward })
+        : winner === "rival"
+          ? message("log.loss")
+          : message("log.expired"),
+  );
+  decideRival(s);
+}
+function startContract(s: GameState) {
+  const c = s.contract;
+  if (c.phase === "cooldown") c.number++;
+  c.phase = "active";
+  c.remaining = CONTRACT.duration;
+  c.playerDelivered = 0;
+  c.rivalDelivered = 0;
+  addLog(s, message("log.contract", { number: c.number }));
+  decideRival(s);
+}
+function progressOperation(op: Operation, seconds: number) {
+  op.instability = clamp(op.instability + DRIFT[op.mode] * seconds, 0, 100);
+  op.lock = Math.max(0, op.lock - seconds);
+  if (op.lock < EPS) op.lock = 0;
+}
+function timeToDelivery(
+  amount: number,
+  seconds: number,
+  delivered: (time: number) => number,
+) {
+  if (amount <= EPS) return 0;
+  if (delivered(seconds) < amount - EPS) return Infinity;
+  let lo = 0,
+    hi = seconds;
+  for (let i = 0; i < 45; i++) {
+    const mid = (lo + hi) / 2;
+    if (delivered(mid) < amount) lo = mid;
+    else hi = mid;
+  }
+  return hi;
+}
+
+/** One simulation step, with exact internal event boundaries. UI frame rate is irrelevant. */
+export function stepGame(s: GameState, seconds = STEP_MS / 1000) {
+  if (s.paused || seconds <= 0) return;
+  checkMilestones(s);
+  let remaining = seconds;
+  while (remaining > EPS) {
+    const c = s.contract;
+    const hasRival = c.phase !== "locked";
+    if (hasRival && rZero(s.rival.decisionIn)) decideRival(s);
+    if (c.phase !== "locked" && c.remaining <= EPS) {
+      if (c.phase === "active") settleContract(s, "expired");
+      else startContract(s);
+      continue;
+    }
+    let duration = Math.min(
+      remaining,
+      hasRival ? s.rival.decisionIn : Infinity,
+      hasRival ? c.remaining : Infinity,
+    );
+    let playerHit = Infinity,
+      rivalHit = Infinity;
+    const active = c.phase === "active";
+    if (active) {
+      playerHit = timeToDelivery(
+        CONTRACT.target - c.playerDelivered,
+        duration,
+        (t) => integratedPlayer(s, t) * c.allocation,
+      );
+      rivalHit = timeToDelivery(
+        CONTRACT.target - c.rivalDelivered,
+        duration,
+        (t) =>
+          integratedProduction(s.rival, RIVAL_BASE, t) * s.rival.allocation,
+      );
+      duration = Math.min(duration, playerHit, rivalHit);
+    }
+    const generated = integratedPlayer(s, duration);
+    const delivered = active ? generated * c.allocation : 0;
+    s.magic += generated - delivered;
+    s.lifetimeMagic += generated;
+    if (active) {
+      c.playerDelivered += delivered;
+      c.rivalDelivered +=
+        integratedProduction(s.rival, RIVAL_BASE, duration) *
+        s.rival.allocation;
+    }
+    for (const id of TOWER_IDS) {
+      const t = s.towers[id];
+      if (!t.level) continue;
+      progressOperation(t, duration);
+      if (
+        !s.hasCompletedRecovery &&
+        t.mode === "rest" &&
+        t.recoveryEligible &&
+        t.instability <= 20 + EPS
+      ) {
+        s.hasCompletedRecovery = true;
+        addLog(s, message("log.recovery"));
+      }
+    }
+    if (hasRival) {
+      progressOperation(s.rival, duration);
+      s.rival.decisionIn = Math.max(0, s.rival.decisionIn - duration);
+      c.remaining = Math.max(0, c.remaining - duration);
+    }
+    s.activeSeconds += duration;
+    remaining -= duration;
+    if (active && (playerHit <= duration + EPS || rivalHit <= duration + EPS)) {
+      settleContract(
+        s,
+        Math.abs(playerHit - rivalHit) <= EPS
+          ? "tie"
+          : playerHit < rivalHit
+            ? "player"
+            : "rival",
+      );
+    } else if (c.phase === "active" && c.remaining <= EPS)
+      settleContract(s, "expired");
+    checkMilestones(s);
+  }
+}
+function rZero(value: number) {
+  return value <= EPS;
+}
+
+export function advanceMilliseconds(s: GameState, ms: number) {
+  if (s.paused || !Number.isFinite(ms) || ms <= 0) return;
+  s.remainderMs += ms;
+  while (s.remainderMs >= STEP_MS - EPS) {
+    s.remainderMs = Math.max(0, s.remainderMs - STEP_MS);
+    stepGame(s);
+  }
+}
+
+export function nextObjective(s: GameState): {
+  title: LocalizedText;
+  description: LocalizedText;
+  progress: number;
+} {
+  if (!s.towers.wald.level)
+    return {
+      title: message("goal.awaken"),
+      description: message("goal.awakenHint"),
+      progress: 0,
+    };
+  if (!s.towers.pilz.level)
+    return {
+      title: message("goal.pilz"),
+      description: message("goal.pilzHint", {
+        amount: Math.floor(s.lifetimeMagic),
+      }),
+      progress: Math.min(1, s.lifetimeMagic / 100),
+    };
+  if (!s.hasCompletedRecovery)
+    return {
+      title: message("goal.recovery"),
+      description: message("goal.recoveryHint"),
+      progress: 0.4,
+    };
+  if (!s.towers.blitz.level)
+    return {
+      title: message("goal.blitz"),
+      description: message("goal.blitzHint", {
+        amount: Math.floor(s.lifetimeMagic),
+      }),
+      progress: Math.min(1, s.lifetimeMagic / 500),
+    };
+  if (!s.contractsResolved)
+    return {
+      title: message("goal.contract"),
+      description: message("goal.contractHint"),
+      progress: 0.8,
+    };
+  return {
+    title: message("goal.done"),
+    description: message("goal.doneHint"),
+    progress: 1,
+  };
+}

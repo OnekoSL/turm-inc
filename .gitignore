@@ -1,0 +1,16 @@
+node_modules/
+.vite/
+out/
+test-results/
+playwright-report/
+coverage/
+*.log
+.env
+.env.*
+!.env.example
+spielstand*.json
+sicherung.archiv-*.json
+settings.json
+settings.json.*
+Thumbs.db
+.DS_Store

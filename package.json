@@ -1,0 +1,39 @@
+{
+  "name": "turm-inc",
+  "productName": "Turm INC",
+  "version": "0.1.1",
+  "description": "Ein magisches Turmnetzwerk unter deiner Leitung.",
+  "main": ".vite/build/main.cjs",
+  "type": "module",
+  "author": "Turm INC",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package --platform=win32 --arch=x64",
+    "make": "npm run package && node scripts/make-zip.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:desktop": "playwright test",
+    "check": "npm run typecheck && npm test"
+  },
+  "dependencies": {
+    "lucide-react": "1.52.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "8.0.1",
+    "@electron-forge/plugin-vite": "8.0.1",
+    "@electron-forge/shared-types": "8.0.1",
+    "@playwright/test": "1.63.0",
+    "@types/node": "26.6.4",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "electron": "44.5.1",
+    "typescript": "5.9.3",
+    "vite": "8.3.2",
+    "vitest": "4.1.11",
+    "yazl": "3.3.1"
+  }
+}
