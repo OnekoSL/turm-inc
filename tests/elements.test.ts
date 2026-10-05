@@ -16,7 +16,7 @@ import {
   unlocked,
 } from "../src/game/engine";
 import {
-  CONTRACT_TIERS,
+  LEGACY_CONTRACT_TIERS,
   nextContractRules,
   roomElementFactor,
   TOWERS,
@@ -78,7 +78,7 @@ describe("Elements and expansion", () => {
         expect(applyAction(s, { type: "activate", id }).ok).toBe(false);
         expect(s.magic).toBe(before - prices[i]);
       });
-      expect(nextContractRules(s).tier).toBe(4);
+      expect(nextContractRules(s).rank).toBe(0);
       expect(validateGame(s)).toBe(true);
     },
   );
@@ -210,15 +210,15 @@ describe("Transparent contract tiers", () => {
     const rules = structuredClone(s.contract.rules);
     ok(s, { type: "activate", id: "fels" });
     expect(s.contract.rules).toEqual(rules);
-    expect(nextContractRules(s).tier).toBe(2);
+    expect(nextContractRules(s).rank).toBe(0);
     s.contract.remaining = 0;
     stepGame(s);
     expect(s.contract.lastResult?.rules).toEqual(rules);
     s.contract.remaining = 0;
     stepGame(s);
-    expect(s.contract.rules).toEqual(CONTRACT_TIERS[1]);
+    expect(s.contract.rules).toEqual({...LEGACY_CONTRACT_TIERS[0], rank: 0});
   });
-  for (const rules of CONTRACT_TIERS)
+  for (const rules of LEGACY_CONTRACT_TIERS)
     for (const winner of ["player", "rival", "tie", "expired"] as const) {
       it(`resolves ${winner} exactly once at tier ${rules.tier}`, () => {
         const s = ready();
@@ -295,7 +295,7 @@ describe("v3 migration", () => {
       s.contract.remaining = 93;
       s.contract.playerDelivered = 23;
       s.contract.lastResult = {
-        rules: { ...CONTRACT_TIERS[0] },
+        rules: { ...LEGACY_CONTRACT_TIERS[0] },
         number: 1,
         winner: "tie",
         playerDelivered: 80,

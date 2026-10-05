@@ -80,7 +80,7 @@ export const de = {
   "ui.nextStep": "DEIN NÄCHSTER SCHRITT",
   "ui.goalProgress": "Fortschritt zum nächsten Ziel",
   "ui.chronicle": "AUS DEINEM REICH",
-  "ui.prototype": "PROTOTYP 0.3.0",
+  "ui.prototype": "PROTOTYP 0.3.1",
   "ui.saveFailed": "Speichern fehlgeschlagen",
   "ui.saved": "Fortschritt lokal gespeichert",
   "ui.retry": "Erneut versuchen",

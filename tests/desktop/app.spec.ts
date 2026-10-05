@@ -17,7 +17,7 @@ import {
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { newGame } from "../../src/game/engine";
-import { CONTRACT_TIERS } from "../../src/game/content";
+import { LEGACY_CONTRACT_TIERS, rulesForRank } from "../../src/game/content";
 import { NEW_TOWER_IDS, TOWER_IDS } from "../../src/game/types";
 import { legacyFixture } from "../legacy-fixture";
 import { spawn } from "node:child_process";
@@ -558,13 +558,14 @@ test("v0.2 rooms, research, crystal controls and demolition work in both languag
   expect(
     (await reopened.page.evaluate(() => window.turm.snapshot())).game.colony,
   ).toEqual(saved.colony);
-  expect(saved.schemaVersion).toBe(4);
+  expect(saved.schemaVersion).toBe(5);
   expect(errors).toEqual([]);
 });
 
 test("nine towers, element groups and tier-four competition work offline in both languages", async ({}, info) => {
   const d = temp(),
     s = newGame();
+  s.competitionRank = 25;
   s.elementsUnlocked = true;
   s.magic = 3000;
   s.lifetimeMagic = 20000;
@@ -583,7 +584,7 @@ test("nine towers, element groups and tier-four competition work offline in both
   s.colony.rooms.wald.kitchen = { level: 1, workers: 1, investedMagic: 25 };
   s.contract = {
     ...s.contract,
-    rules: { ...CONTRACT_TIERS[3] },
+    rules: { ...LEGACY_CONTRACT_TIERS[3] },
     phase: "active",
     number: 6,
     remaining: 120,
@@ -602,7 +603,9 @@ test("nine towers, element groups and tier-four competition work offline in both
   expect(grouped.towers.wald.mode).toBe("rest");
   expect(grouped.towers.fels.mode).toBe("rest");
   expect(grouped.towers.pilz.mode).toBe("normal");
-  await expect(page.locator(".tier-note")).toContainText("800");
+  await expect(
+    page.locator(".deliveries [role=progressbar]").first(),
+  ).toHaveAttribute("aria-valuemax", "800");
   await page.screenshot({
     path: info.outputPath("v03-elements-de.png"),
     fullPage: true,
@@ -697,7 +700,7 @@ test("packaged app migrates a completed v0.2 game and permits free choice of the
   writeFileSync(join(d, "spielstand.json"), JSON.stringify(old));
   const { page } = await launch(d);
   const initial = (await page.evaluate(() => window.turm.snapshot())).game;
-  expect(initial.schemaVersion).toBe(4);
+  expect(initial.schemaVersion).toBe(5);
   expect(initial.elementsUnlocked).toBe(true);
   expect(initial.towers.blitz.lock).toBe(14);
   await page.getByTestId("resume").click();
@@ -709,4 +712,71 @@ test("packaged app migrates a completed v0.2 game and permits free choice of the
   expect(after.magic).toBeLessThan(20);
   await page.getByTestId("select-lava").click();
   await expect(page.getByTestId("buy-lava")).toContainText("960");
+});
+
+test("a victory promotes rank, explains the next class in both languages and persists it", async ({}, info) => {
+  const d = temp(),
+    s = newGame();
+  s.competitionRank = 4;
+  s.magic = 100;
+  s.lifetimeMagic = 1000;
+  s.hasCompletedRecovery = true;
+  s.towers.wald.level = 2;
+  s.towers.pilz.level = 1;
+  s.towers.blitz.level = 1;
+  s.contract = {
+    ...s.contract,
+    phase: "active",
+    number: 1,
+    remaining: 100,
+    allocation: 0.75,
+    playerDelivered: 79.99,
+    rules: rulesForRank(4),
+  };
+  writeFileSync(join(d, "spielstand.json"), JSON.stringify(s));
+  const { app, page } = await launch(d);
+  await expect(page.locator(".tier-note")).toContainText("Wettbewerbsrang 4");
+  await page.getByTestId("resume").click();
+  await expect
+    .poll(
+      async () =>
+        (await page.evaluate(() => window.turm.snapshot())).game
+          .competitionRank,
+    )
+    .toBe(5);
+  await expect(page.locator(".tier-note")).toContainText("Ziel 129");
+  await expect(page.locator(".result-note")).toContainText("+160 Magie");
+  await page.locator(".competition-help summary").click();
+  await expect(page.locator(".competition-help")).toContainText("10 %");
+  await page.screenshot({
+    path: info.outputPath("rank-de.png"),
+    fullPage: true,
+  });
+  await page.getByRole("combobox", { name: "Sprache" }).selectOption("en");
+  await expect(page.locator(".tier-note")).toContainText("Competition rank 5");
+  await expect(page.locator(".competition-help")).toContainText(
+    "After a victory: rank 6",
+  );
+  await app.evaluate(({ BrowserWindow }) =>
+    BrowserWindow.getAllWindows()[0].setSize(1080, 760),
+  );
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+  await page.screenshot({
+    path: info.outputPath("rank-en-small.png"),
+    fullPage: true,
+  });
+  await page.getByRole("button", { name: "Pause", exact: true }).click();
+  const before = (await page.evaluate(() => window.turm.snapshot())).game;
+  await app.close();
+  instances.delete(app);
+  const reopened = await launch(d);
+  const after = (await reopened.page.evaluate(() => window.turm.snapshot()))
+    .game;
+  expect(after.competitionRank).toBe(5);
+  expect(after.contract).toEqual(before.contract);
+  expect(after.magic).toBe(before.magic);
 });

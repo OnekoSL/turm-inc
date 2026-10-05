@@ -173,18 +173,43 @@ export const ELEMENT_BALANCE = {
   airLock: 12,
 };
 export const EXPANSION_PRICE = { base: 600, growth: 1.6 };
-export const CONTRACT_TIERS: readonly ContractRules[] = [
-  { tier: 1, target: 80, reward: 160, rivalBase: 2 },
-  { tier: 2, target: 240, reward: 480, rivalBase: 6 },
-  { tier: 3, target: 480, reward: 960, rivalBase: 12 },
-  { tier: 4, target: 800, reward: 1600, rivalBase: 20 },
+export const LEGACY_CONTRACT_TIERS: readonly ContractRules[] = [
+  { rank: null, tier: 1, target: 80, reward: 160, rivalBase: 2 },
+  { rank: null, tier: 2, target: 240, reward: 480, rivalBase: 6 },
+  { rank: null, tier: 3, target: 480, reward: 960, rivalBase: 12 },
+  { rank: null, tier: 4, target: 800, reward: 1600, rivalBase: 20 },
 ];
-export const rulesForCount = (count: number): ContractRules =>
-  CONTRACT_TIERS[count >= 8 ? 3 : count >= 6 ? 2 : count >= 4 ? 1 : 0];
-export const activeTowerCount = (s: GameState) =>
-  Object.values(s.towers).filter((t) => t.level > 0).length;
+export const COMPETITION = {
+  base: 2,
+  growth: 1.1,
+  ranksPerClass: 5,
+  target: 80,
+  rewardRatio: 2,
+};
+export function rulesForRank(rank: number): ContractRules {
+  const block = Math.floor(rank / COMPETITION.ranksPerClass);
+  const target = Math.ceil(
+    COMPETITION.target *
+      COMPETITION.growth ** (block * COMPETITION.ranksPerClass) -
+      1e-8,
+  );
+  return {
+    rank,
+    tier: block + 1,
+    target,
+    reward: target * COMPETITION.rewardRatio,
+    rivalBase: COMPETITION.base * COMPETITION.growth ** rank,
+  };
+}
+export const rankForLegacyStrength = (base: number) =>
+  Math.max(
+    0,
+    Math.ceil(
+      Math.log(base / COMPETITION.base) / Math.log(COMPETITION.growth) - 1e-8,
+    ),
+  );
 export const nextContractRules = (s: GameState) =>
-  rulesForCount(activeTowerCount(s));
+  rulesForRank(s.competitionRank);
 export const modeLock = (id: TowerId) =>
   TOWERS[id].element === "air" ? ELEMENT_BALANCE.airLock : MODE_LOCK;
 export const towerDrift = (id: TowerId, mode: Mode) =>

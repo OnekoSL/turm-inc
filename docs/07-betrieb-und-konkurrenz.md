@@ -1,5 +1,7 @@
 # Aktiver Betrieb und Konkurrenz
 
+> Ab v0.3.1 ersetzt der [Wettbewerbsrang](13-wettbewerbsrang.md) die Konkurrenzstufen nach Turmanzahl. Die folgenden v0.3-Angaben zur Gegnersteigerung sind historisch.
+
 > Aktueller Stand v0.3: [Sechs Elemente und neun Türme](12-elemente-und-tuerme.md). Dort festgelegte Erweiterungen haben Vorrang vor älteren Angaben.
 
 > Aktueller Stand v0.2: [Bewohner, Räume und Ressourcen](11-bewohner-und-raeume.md). Diese Erweiterung hat bei abweichenden Angaben Vorrang.

@@ -3,6 +3,13 @@ export function legacyFixture(state: GameState, version = 3): any {
   const s: any = structuredClone(state);
   s.schemaVersion = version;
   s.balanceVersion = 1;
+  delete s.competitionRank;
+  if (version === 4) {
+    s.balanceVersion = 2;
+    delete s.contract.rules.rank;
+    if (s.contract.lastResult) delete s.contract.lastResult.rules.rank;
+    return s;
+  }
   delete s.elementsUnlocked;
   for (const id of NEW_TOWER_IDS) {
     delete s.towers[id];

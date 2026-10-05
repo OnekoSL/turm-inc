@@ -1,5 +1,20 @@
 import type { elementsDE } from "./elements-de";
 export const elementsEN = {
+  "competition.rank": "Competition rank {rank}",
+  "competition.current":
+    "Contract: rank {rank} · Class {tier} · Rival: {rate} magic/s nominal production",
+  "competition.legacy":
+    "Carried-over contract · Old class {tier} · Rival: {rate} magic/s",
+  "competition.next":
+    "Next contract: rank {rank} · Rival {rate}/s · Target {target} · Reward {reward}",
+  "competition.helpTitle": "How does the rival grow stronger?",
+  "competition.help":
+    "Each victory raises your rank by 1 and rival production by 10%. Defeat, ties and expiry leave your rank unchanged. Every five ranks, targets and prizes grow by about 61%. Changes apply to the next contract; tower expansion does not strengthen the rival.",
+  "competition.afterWin":
+    "After a victory: rank {rank} · Rival {rate}/s · Target {target} · Reward {reward}",
+  "competition.promoted":
+    "Competition rank {rank} reached. Next contract: rival with {rate} magic/s nominal production.",
+
   "element.earth": "Earth",
   "element.earthBonus": "Kitchens: +20% food for the same magic input.",
   "element.water": "Water",
@@ -48,9 +63,5 @@ export const elementsEN = {
     "Immediately affects available active towers of this element. Locked towers are skipped.",
   "elements.changed": "Changed: {towers}. Still locked: {locked}.",
   "elements.none": "none",
-  "elements.tier": "Tier {tier} · Rival: {rate} magic/s nominal production",
-  "elements.nextTier":
-    "Next contract: tier {tier} · Target {target} · Reward {reward}",
-  "elements.purchaseTier": "After awakening: next contract at tier {tier}.",
   "elements.result": "Contract target: {target} · Prize: {reward}",
 } satisfies Record<keyof typeof elementsDE, string>;

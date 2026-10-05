@@ -54,8 +54,7 @@ import {
   ELEMENTS,
   modeLock,
   nextContractRules,
-  activeTowerCount,
-  rulesForCount,
+  rulesForRank,
   MAX_LEVEL,
   MODE_LABELS,
   TOWERS,
@@ -900,14 +899,6 @@ function App() {
                   </span>
                 </button>
 
-                {!t.level && discovered && (
-                  <p>
-                    {tr("elements.purchaseTier", {
-                      tier: rulesForCount(activeTowerCount(s) + 1).tier,
-                    })}
-                  </p>
-                )}
-
                 {discovered && t.level < MAX_LEVEL && s.magic < cost && (
                   <small className="missing">
                     {tr("ui.missing", { amount: cost - s.magic })}
@@ -1307,18 +1298,39 @@ function ContractPanel({
           <p className="contract-intro">{tr("contract.unlock")}</p>
         ) : (
           <>
-            <p className="tier-note">
-              {tr("elements.tier", {
-                tier: c.rules.tier,
-                rate: c.rules.rivalBase,
-              })}
+            <div className="tier-note">
+              {tr("competition.rank", { rank: s.competitionRank })}
               <br />
-              {tr("elements.nextTier", {
-                tier: next.tier,
+              {tr(
+                active && c.rules.rank === null
+                  ? "competition.legacy"
+                  : "competition.current",
+                {
+                  rank: rules.rank ?? s.competitionRank,
+                  tier: rules.tier,
+                  rate: rules.rivalBase,
+                },
+              )}
+              <br />
+              {tr("competition.next", {
+                rank: next.rank ?? 0,
+                rate: next.rivalBase,
                 target: next.target,
                 reward: next.reward,
               })}
-            </p>
+              <details className="competition-help">
+                <summary>{tr("competition.helpTitle")}</summary>
+                <p>{tr("competition.help")}</p>
+                <p>
+                  {tr("competition.afterWin", {
+                    rank: s.competitionRank + 1,
+                    rate: rulesForRank(s.competitionRank + 1).rivalBase,
+                    target: rulesForRank(s.competitionRank + 1).target,
+                    reward: rulesForRank(s.competitionRank + 1).reward,
+                  })}
+                </p>
+              </details>
+            </div>
 
             <div className="deliveries">
               <div>

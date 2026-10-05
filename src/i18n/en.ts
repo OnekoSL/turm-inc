@@ -79,7 +79,7 @@ export const en = {
   "ui.nextStep": "YOUR NEXT STEP",
   "ui.goalProgress": "Progress towards the next objective",
   "ui.chronicle": "FROM YOUR REALM",
-  "ui.prototype": "PROTOTYPE 0.3.0",
+  "ui.prototype": "PROTOTYPE 0.3.1",
   "ui.saveFailed": "Save failed",
   "ui.saved": "Progress saved locally",
   "ui.retry": "Try again",

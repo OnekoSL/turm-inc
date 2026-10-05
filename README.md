@@ -1,16 +1,32 @@
 # Turm INC
 
+## English
+
+A fantasy incremental game for Windows: manage nine magical towers across six elements, assign minions to rooms and compete against the Obsidian Alliance. In v0.3.1, every victory raises your competition rank and makes the rival 10% stronger for the next contract. Defeats and ties leave your rank unchanged. Existing saves are migrated automatically.
+
+[**Download Turm INC v0.3.1 for Windows x64**](https://github.com/OnekoSL/turm-inc/releases/tag/v0.3.1) · [Release notes — English, then German](docs/releases/v0.3.1.md)
+
+Close the old version, extract the full Windows ZIP and run `Turm INC/Turm INC.exe`. English and German are included. No development server or Node.js installation is required to play. **Image owner: Nevico.**
+
+## Deutsch
+
 Ein Fantasy-Incremental mit aktivem Management für Windows. Neun magische Türme in sechs Elementen, ein instabiler Betrieb und ein Rivale, der um dieselben Aufträge wirbt.
 
 ## Download für Windows
 
-[**Turm INC v0.3.0 herunterladen**](https://github.com/OnekoSL/turm-inc/releases/tag/v0.3.0)
+[**Turm INC v0.3.1 herunterladen**](https://github.com/OnekoSL/turm-inc/releases/tag/v0.3.1)
 
 Unter „Assets“ das Windows-x64-ZIP wählen, vollständig entpacken und `Turm INC/Turm INC.exe` starten. Deutsch und Englisch sind enthalten. Zum Spielen werden weder Node.js noch ein Entwicklungsserver benötigt.
 
+## Neu in v0.3.1
+
+Jeder gewonnene Auftrag erhöht den Wettbewerbsrang und macht den Obsidianbund beim nächsten Auftrag um 10 % stärker. Niederlagen, Gleichstände und abgelaufene Aufträge verändern den Rang nicht. Alle fünf Ränge wachsen Lieferziel und Prämie. Die bisherigen Stärke-Sprünge durch zusätzliche Türme entfallen. Bestehende Aufträge und Spielstände werden übernommen.
+
+[Regeln des Wettbewerbsrangs](docs/13-wettbewerbsrang.md) · [Aktueller Prüfbericht](docs/09-pruefbericht.md)
+
 ## Neu in v0.3
 
-Fels, Eis, Lava, Wind, Sonne und Mond ergänzen Wald, Pilz und Blitz. Erde, Wasser, Feuer, Luft, Licht und Schatten besitzen lokale Boni für Betrieb oder Räume. Nach der bisherigen Einführung kannst du die sechs neuen Türme in beliebiger Reihenfolge erwecken. Elementbefehle vereinfachen gemeinsame Betriebswechsel; der Obsidianbund wächst nach vier sichtbaren Konkurrenzstufen. Bestehende Spielstände werden übernommen.
+Fels, Eis, Lava, Wind, Sonne und Mond ergänzen Wald, Pilz und Blitz. Erde, Wasser, Feuer, Luft, Licht und Schatten besitzen lokale Boni für Betrieb oder Räume. Nach der bisherigen Einführung kannst du die sechs neuen Türme in beliebiger Reihenfolge erwecken. Elementbefehle vereinfachen gemeinsame Betriebswechsel; seit v0.3.1 wächst der Obsidianbund mit deinem Wettbewerbsrang. Bestehende Spielstände werden übernommen.
 
 [Verbindliche Regeln v0.3](docs/12-elemente-und-tuerme.md) · [Prüfbericht](docs/09-pruefbericht.md)
 

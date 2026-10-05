@@ -59,14 +59,14 @@ describe("Lokaler Spielstand", () => {
     expect(loaded.blocked).toBe(false);
     expect(loaded.issue).toBeNull();
     const { colony: migrated, schemaVersion } = loaded.game!;
-    expect(schemaVersion).toBe(4);
+    expect(schemaVersion).toBe(5);
     expect(loaded.game).toMatchObject({
       magic: 812.5,
       lifetimeMagic: 1200,
       activeSeconds: 600,
       hasCompletedRecovery: true,
       contractsResolved: 2,
-      balanceVersion: 2,
+      balanceVersion: 3,
     });
     expect(loaded.game!.towers).toMatchObject(legacy.towers);
     expect(loaded.game!.contract).toMatchObject(legacy.contract);

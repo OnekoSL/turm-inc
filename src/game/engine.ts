@@ -11,7 +11,7 @@ import {
   DRIFT,
   MAX_LEVEL,
   MODE_LOCK,
-  CONTRACT_TIERS,
+  rulesForRank,
   nextContractRules,
   modeLock,
   ELEMENT_BALANCE,
@@ -51,10 +51,11 @@ const operation = (mode: Mode = "normal"): Operation => ({
 
 export function newGame(): GameState {
   return {
-    schemaVersion: 4,
+    schemaVersion: 5,
+    competitionRank: 0,
     elementsUnlocked: false,
     colony: newColony(),
-    balanceVersion: 2,
+    balanceVersion: 3,
     magic: 0,
     lifetimeMagic: 0,
     activeSeconds: 0,
@@ -66,7 +67,7 @@ export function newGame(): GameState {
     hasCompletedRecovery: false,
     contractsResolved: 0,
     contract: {
-      rules: { ...CONTRACT_TIERS[0] },
+      rules: rulesForRank(0),
       phase: "locked",
       number: 0,
       remaining: 0,
@@ -361,6 +362,16 @@ function settleContract(s: GameState, winner: Winner) {
         : 0;
   s.magic += reward;
   s.contractsResolved++;
+  if (winner === "player") {
+    s.competitionRank++;
+    addLog(
+      s,
+      message("competition.promoted", {
+        rank: s.competitionRank,
+        rate: nextContractRules(s).rivalBase,
+      }),
+    );
+  }
   c.lastResult = {
     number: c.number,
     rules: { ...c.rules },

@@ -1,5 +1,7 @@
 # Turm INC v0.3 – Sechs Elemente und neun Türme
 
+> Ab v0.3.1 ersetzt der [Wettbewerbsrang](13-wettbewerbsrang.md) die Konkurrenzstufen nach Turmanzahl. Die folgenden v0.3-Angaben zur Gegnersteigerung sind historisch.
+
 Stand: 5. Oktober 2026. Verbindliche Erweiterung von [v0.2](11-bewohner-und-raeume.md). Bei Abweichungen gelten die Regeln dieses Dokuments. Auslieferung: Windows x64, v0.3.0.
 
 ## Elemente und lokale Wirkung

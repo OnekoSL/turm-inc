@@ -1,4 +1,8 @@
-import { CONTRACT_TIERS } from "../game/content";
+import {
+  LEGACY_CONTRACT_TIERS,
+  rulesForRank,
+  rankForLegacyStrength,
+} from "../game/content";
 import { introductionComplete } from "../game/engine";
 import { newColony, ROOMS, roomUpgradeCost } from "../game/economy";
 import {
@@ -109,10 +113,10 @@ function validColony(v: unknown, towers: unknown, legacy = false) {
   }
   return workers <= (v.minions as number);
 }
-function validRules(v: unknown) {
+function validOldRules(v: unknown) {
   return (
     record(v) &&
-    CONTRACT_TIERS.some(
+    LEGACY_CONTRACT_TIERS.some(
       (r) =>
         r.tier === v.tier &&
         r.target === v.target &&
@@ -121,17 +125,35 @@ function validRules(v: unknown) {
     )
   );
 }
-export function validateGame(value: unknown): value is GameState {
-  return validateSchema(value, false);
+function validRules(v: unknown) {
+  if (!record(v)) return false;
+  if (v.rank === null) return validOldRules(v);
+  if (!integer(v.rank)) return false;
+  const expected = rulesForRank(v.rank as number);
+  return ["target", "reward", "rivalBase", "tier"].every(
+    (key) =>
+      number(v[key]) && v[key] === expected[key as keyof typeof expected],
+  );
 }
-function validateSchema(value: unknown, legacy: boolean): boolean {
+export function validateGame(value: unknown): value is GameState {
+  return validateSchema(value, 5);
+}
+function validateSchema(value: unknown, version: 3 | 4 | 5): boolean {
+  const legacy = version === 3;
+  const checkRules = version === 4 ? validOldRules : validRules;
   if (
     !record(value) ||
-    value.schemaVersion !== (legacy ? 3 : 4) ||
-    value.balanceVersion !== (legacy ? 1 : 2)
+    value.schemaVersion !== version ||
+    value.balanceVersion !== version - 2
   )
     return false;
   const s = value;
+  if (
+    version === 5 &&
+    (!integer(s.competitionRank) ||
+      !validRules(rulesForRank(s.competitionRank as number)))
+  )
+    return false;
   const ids = legacy ? STARTER_IDS : TOWER_IDS;
   if (!legacy && typeof s.elementsUnlocked !== "boolean") return false;
   if (!validColony(s.colony, s.towers, legacy)) return false;
@@ -160,10 +182,10 @@ function validateSchema(value: unknown, legacy: boolean): boolean {
   )
     return false;
   const c = s.contract;
-  if (!record(c) || (!legacy && !validRules(c.rules))) return false;
+  if (!record(c) || (!legacy && !checkRules(c.rules))) return false;
   const rules = legacy
-    ? CONTRACT_TIERS[0]
-    : (c.rules as unknown as (typeof CONTRACT_TIERS)[number]);
+    ? LEGACY_CONTRACT_TIERS[0]
+    : (c.rules as unknown as (typeof LEGACY_CONTRACT_TIERS)[number]);
   if (
     !record(c) ||
     !["locked", "preparing", "active", "cooldown"].includes(String(c.phase)) ||
@@ -188,10 +210,10 @@ function validateSchema(value: unknown, legacy: boolean): boolean {
     return false;
   if (c.lastResult !== null) {
     const r = c.lastResult;
-    if (!record(r) || (!legacy && !validRules(r.rules))) return false;
+    if (!record(r) || (!legacy && !checkRules(r.rules))) return false;
     const resultRules = legacy
-      ? CONTRACT_TIERS[0]
-      : (r.rules as unknown as (typeof CONTRACT_TIERS)[number]);
+      ? LEGACY_CONTRACT_TIERS[0]
+      : (r.rules as unknown as (typeof LEGACY_CONTRACT_TIERS)[number]);
     if (
       !record(r) ||
       !integer(r.number) ||
@@ -261,7 +283,7 @@ export class SaveStore {
       };
     }
     if (record(raw) && raw.schemaVersion === 3) {
-      if (!validateSchema(raw, true))
+      if (!validateSchema(raw, 3))
         throw new LocalizedError(message("error.saveVersion"));
       const migrated = raw as unknown as GameState;
       for (const id of NEW_TOWER_IDS) {
@@ -275,16 +297,29 @@ export class SaveStore {
         migrated.colony.rooms[id] = {};
         migrated.colony.resonance[id] = "off";
       }
-      migrated.contract.rules = { ...CONTRACT_TIERS[0] };
+      migrated.contract.rules = { ...LEGACY_CONTRACT_TIERS[0] };
       if (migrated.contract.lastResult)
-        migrated.contract.lastResult.rules = { ...CONTRACT_TIERS[0] };
+        migrated.contract.lastResult.rules = { ...LEGACY_CONTRACT_TIERS[0] };
       migrated.elementsUnlocked = introductionComplete(migrated);
-      migrated.schemaVersion = 4;
-      migrated.balanceVersion = 2;
+      raw.schemaVersion = 4;
+      raw.balanceVersion = 2;
       for (const entry of migrated.log) {
         if (typeof entry.text !== "string" && entry.text.key === "log.contract")
           entry.text.params = { target: 80, reward: 160, ...entry.text.params };
       }
+    }
+    if (record(raw) && raw.schemaVersion === 4) {
+      if (!validateSchema(raw, 4))
+        throw new LocalizedError(message("error.saveVersion"));
+      const migrated = raw as unknown as GameState;
+      migrated.competitionRank = rankForLegacyStrength(
+        migrated.contract.rules.rivalBase,
+      );
+      migrated.contract.rules.rank = null;
+      if (migrated.contract.lastResult)
+        migrated.contract.lastResult.rules.rank = null;
+      migrated.schemaVersion = 5;
+      migrated.balanceVersion = 3;
     }
     if (!validateGame(raw))
       throw new LocalizedError(message("error.saveVersion"));
@@ -301,8 +336,9 @@ export class SaveStore {
         const raw: unknown = JSON.parse(readFileSync(this.path, "utf8"));
         if (
           record(raw) &&
-          (![1, 2, 3, 4].includes(raw.schemaVersion as number) ||
-            raw.balanceVersion !== (raw.schemaVersion === 4 ? 2 : 1))
+          (![1, 2, 3, 4, 5].includes(raw.schemaVersion as number) ||
+            raw.balanceVersion !==
+              (raw.schemaVersion === 5 ? 3 : raw.schemaVersion === 4 ? 2 : 1))
         ) {
           this.blocked = true;
           return {

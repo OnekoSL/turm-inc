@@ -126,7 +126,8 @@ it.each(routes)(
     expect(newTowerCount(s)).toBe(6);
     expect(s.colony.supply).toBe(100);
     expect(validateGame(s)).toBe(true);
-    expect(s.contract.rules.tier).toBe(4);
+    expect(s.competitionRank).toBe(0);
+    expect(s.contract.rules.rank).toBe(0);
     expect(s.colony.knowledge - knowledge).toBeCloseTo(
       route.library === "sonne" ? 45 : 37.5,
       5,

@@ -1,7 +1,7 @@
 {
   "name": "turm-inc",
   "productName": "Turm INC",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Ein magisches Turmnetzwerk unter deiner Leitung.",
   "main": ".vite/build/main.cjs",
   "type": "module",

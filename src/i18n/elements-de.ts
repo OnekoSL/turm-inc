@@ -1,4 +1,19 @@
 export const elementsDE = {
+  "competition.rank": "Wettbewerbsrang {rank}",
+  "competition.current":
+    "Auftrag: Rang {rank} · Klasse {tier} · Rivale: {rate} Magie/s Nennproduktion",
+  "competition.legacy":
+    "Übernommener Auftrag · Alte Klasse {tier} · Rivale: {rate} Magie/s",
+  "competition.next":
+    "Nächster Auftrag: Rang {rank} · Rivale {rate}/s · Ziel {target} · Prämie {reward}",
+  "competition.helpTitle": "Wie wird der Rivale stärker?",
+  "competition.help":
+    "Jeder Sieg erhöht deinen Rang um 1 und die Rivalenproduktion um 10 %. Niederlage, Gleichstand und Ablauf ändern den Rang nicht. Alle fünf Ränge steigen Ziel und Prämie um rund 61 %. Änderungen gelten erst für den nächsten Auftrag; Turmausbau erhöht die Gegnerstärke nicht.",
+  "competition.afterWin":
+    "Nach einem Sieg: Rang {rank} · Rivale {rate}/s · Ziel {target} · Prämie {reward}",
+  "competition.promoted":
+    "Wettbewerbsrang {rank} erreicht. Nächster Auftrag: Rivale mit {rate} Magie/s Nennproduktion.",
+
   "element.earth": "Erde",
   "element.earthBonus": "Küchen: +20 % Nahrung bei gleichem Magieeinsatz.",
   "element.water": "Wasser",
@@ -48,9 +63,5 @@ export const elementsDE = {
     "Wirkt sofort auf freie, aktive Türme dieses Elements. Gebundene Türme werden übersprungen.",
   "elements.changed": "Umgestellt: {towers}. Noch gebunden: {locked}.",
   "elements.none": "keine",
-  "elements.tier": "Stufe {tier} · Rivale: {rate} Magie/s Nennproduktion",
-  "elements.nextTier":
-    "Nächster Auftrag: Stufe {tier} · Ziel {target} · Prämie {reward}",
-  "elements.purchaseTier": "Nach Erweckung: nächster Auftrag Stufe {tier}.",
   "elements.result": "Auftragsziel: {target} · Prämie: {reward}",
 } as const;

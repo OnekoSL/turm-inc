@@ -19,6 +19,7 @@ export const ELEMENT_IDS = [
 ] as const;
 export type ElementId = (typeof ELEMENT_IDS)[number];
 export interface ContractRules {
+  rank: number | null; // null preserves a pre-rank contract during migration
   tier: number;
   target: number;
   reward: number;
@@ -90,10 +91,11 @@ export interface ContractResult {
   reward: number;
 }
 export interface GameState {
-  schemaVersion: 4;
+  schemaVersion: 5;
+  competitionRank: number;
   elementsUnlocked: boolean;
   colony: Colony;
-  balanceVersion: 2;
+  balanceVersion: 3;
   magic: number;
   lifetimeMagic: number;
   activeSeconds: number;

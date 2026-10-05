@@ -78,7 +78,7 @@ describe("Language-independent presentation and saved games", () => {
     expect(loaded.blocked).toBe(false);
     expect(loaded.issue).toBeNull();
     expect(loaded.game).toMatchObject({
-      schemaVersion: 4,
+      schemaVersion: 5,
       magic: 1234.5,
       activeSeconds: 91,
     });
