@@ -4,7 +4,6 @@ import {
   applyAction,
   factor,
   integratedProduction,
-  introductionComplete,
   isGameAction,
   newGame,
   nominal,
@@ -12,7 +11,7 @@ import {
   stepGame,
   totalProduction,
 } from "../src/game/engine";
-import { TOWER_IDS, type GameState } from "../src/game/types";
+import { STARTER_IDS, TOWER_IDS, type GameState } from "../src/game/types";
 import { validateGame } from "../src/persistence/store";
 
 function playing() {
@@ -27,6 +26,7 @@ function competition() {
   s.lifetimeMagic = 100;
   s.hasCompletedRecovery = true;
   s.contract = {
+    ...s.contract,
     phase: "active",
     number: 1,
     remaining: 180,
@@ -280,7 +280,7 @@ describe("Aufträge und Rivale", () => {
     advanceMilliseconds(s, 100);
     expect(s.activeSeconds).toBeCloseTo(before.activeSeconds + 0.1);
   });
-  it("plays the complete introduction through public actions without granting money", () => {
+  it("plays the original tower and competition milestones without granting money", () => {
     const s = playing();
     let finishedAt = 0;
     let modeChanges = 0;
@@ -308,7 +308,11 @@ describe("Aufträge und Rivale", () => {
         lastActionAt = s.activeSeconds;
       }
       advanceMilliseconds(s, 100);
-      if (introductionComplete(s)) {
+      if (
+        STARTER_IDS.every((id) => s.towers[id].level > 0) &&
+        s.hasCompletedRecovery &&
+        s.contractsResolved > 0
+      ) {
         finishedAt = s.activeSeconds;
         break;
       }
@@ -317,7 +321,7 @@ describe("Aufträge und Rivale", () => {
     expect(finishedAt).toBeLessThan(2400);
     expect(validateGame(s)).toBe(true);
     console.log(
-      `Einführung über normale Spielaktionen abgeschlossen nach ${Math.round(finishedAt)} aktiven Sekunden. Guthaben: ${s.magic.toFixed(1)}. Aufträge: ${s.contractsResolved}. Betriebswechsel: ${modeChanges}. Längster Abstand zwischen wirksamen Aktionen: ${longestGap.toFixed(1)} Sekunden.`,
+      `Ursprüngliche Turmziele über normale Spielaktionen abgeschlossen nach ${Math.round(finishedAt)} aktiven Sekunden. Guthaben: ${s.magic.toFixed(1)}. Aufträge: ${s.contractsResolved}. Betriebswechsel: ${modeChanges}. Längster Abstand zwischen wirksamen Aktionen: ${longestGap.toFixed(1)} Sekunden.`,
     );
   });
 });

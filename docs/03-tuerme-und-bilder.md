@@ -1,8 +1,8 @@
 # Türme und Bilder
 
-> Verbindlicher Umsetzungsstand: [Desktop-Prototyp v0.1](08-prototyp-spezifikation.md). Die Ideen für spätere Türme bleiben unverbindlich.
+> Verbindlicher Umsetzungsstand: [v0.3 – Elemente und Türme](12-elemente-und-tuerme.md). Neun Spielertürme und das Rivalenmotiv sind umgesetzt.
 
-Stand: 4. Oktober 2026 · Status: vorhandene Bildbasis und verbindliche Auswahl für v0.1
+Stand: 5. Oktober 2026 · Status: vorhandene Bildbasis und Auswahl für v0.3
 
 ## Umgang mit den Originalen
 
@@ -24,7 +24,23 @@ Wald-, Pilz- und Blitzturm sind die bestätigte Auswahl für den Prototyp. Die O
 
 Motiv [08](../dl_1788681097183.webp) ist das Hauptquartier des Obsidianbunds. Es dient als Hintergrund im Auftragsfeld; der Rivale benötigt keine zweite vollständige Turmoberfläche.
 
-## Ideen für spätere Türme
+## Erweiterung in v0.3
+
+| Turm | Element | Bild | Lokale Spielkopie |
+| --- | --- | --- | --- |
+| Fels | Erde | [13](../dl_1788771151132.webp) | public/assets/fels.webp |
+| Eis | Wasser | [28](../dl_1789613883161.webp) | public/assets/eis.webp |
+| Lava | Feuer | [33](../dl_1790891971944.webp) | public/assets/lava.webp |
+| Wind | Luft | [29](../dl_1789617668572.webp) | public/assets/wind.webp |
+| Sonne | Licht | [05](../dl_1788681074518.webp) | public/assets/sonne.webp |
+| Mond | Schatten | [22](../dl_1789348686182.webp) | public/assets/mond.webp |
+
+Wald und Pilz gehören zu Erde, Blitz zu Luft. Alle Kopien sind bytegleich mit den Originalbildern. Die Bildrechte-Namensnennung bleibt **Nevico**; es wurden keine neuen Bilder generiert.
+
+## Frühere Ideen für spätere Türme
+
+Die folgende Ideensammlung ist historisch. Für die oben bereits umgesetzten Motive gelten die v0.3-Regeln.
+
 
 | Motiv | Mögliche Funktion | Noch zu klären |
 | --- | --- | --- |

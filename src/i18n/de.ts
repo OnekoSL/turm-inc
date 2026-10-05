@@ -1,4 +1,8 @@
+import { elementsDE } from "./elements-de";
+import { expansionDE } from "./expansion-de";
 export const de = {
+  ...elementsDE,
+  ...expansionDE,
   "credits.imageOwner": "Bildinhaber: Nevico",
   "ui.railNote": "Große Magie beginnt mit einem kleinen Turm.",
   "ui.created": "{amount} Magie erschaffen",
@@ -36,7 +40,8 @@ export const de = {
   "ui.instability": "Instabilität",
   "ui.selectedInstability": "Instabilität des ausgewählten Turms",
   "ui.dormantHint": "Ein ruhender Turm wartet auf deine Magie.",
-  "ui.recovering": "Sinkt um 1 pro Sekunde. Erholung liefert 20 % Leistung.",
+  "ui.recovering":
+    "Sinkt um {rate} pro Sekunde. Erholung liefert 20 % Leistung.",
   "ui.recovered": "Vollständig erholt. Erholung liefert 20 % Leistung.",
   "ui.strainMax": "Maximal belastet.",
   "ui.strainRising": "Steigt um {rate} pro Sekunde.",
@@ -51,7 +56,7 @@ export const de = {
   "mode.highHint": "Mehr Kraft, mehr Belastung",
   "mode.restHint": "Entlasten und regenerieren",
   "ui.modeHint":
-    "Ein Wechsel bindet für 15 Sekunden. Bestehende Instabilität bleibt erhalten.",
+    "Ein Wechsel bindet für {seconds} Sekunden. Bestehende Instabilität bleibt erhalten.",
   "ui.upgradeTitle": "TURM AUSBAUEN",
   "ui.awakenTitle": "TURM ERWECKEN",
   "ui.newBeginning": "Ein neuer Anfang",
@@ -75,7 +80,7 @@ export const de = {
   "ui.nextStep": "DEIN NÄCHSTER SCHRITT",
   "ui.goalProgress": "Fortschritt zum nächsten Ziel",
   "ui.chronicle": "AUS DEINEM REICH",
-  "ui.prototype": "PROTOTYP 0.1.1",
+  "ui.prototype": "PROTOTYP 0.3.0",
   "ui.saveFailed": "Speichern fehlgeschlagen",
   "ui.saved": "Fortschritt lokal gespeichert",
   "ui.retry": "Erneut versuchen",
@@ -103,7 +108,7 @@ export const de = {
     "Türme erzeugen Magie automatisch. Investiere sie in Stufen oder weitere Türme. Die insgesamt erzeugte Magie öffnet neue Orte.",
   "ui.helpRecoveryTitle": "Leistung & Erholung",
   "ui.helpRecovery":
-    "Normalbetrieb belastet langsam, Hochleistung schneller. Ab 40 Instabilität lohnt sich eine bewusste Erholung bis 20. Jeder Wechsel bindet für 15 Sekunden.",
+    "Normalbetrieb belastet langsam, Hochleistung schneller. Ab 40 Instabilität lohnt sich eine bewusste Erholung bis 20. Jeder Wechsel bindet für 15 Sekunden, bei Lufttürmen für 12 Sekunden.",
   "ui.helpContractTitle": "Ein gemeinsames Ziel",
   "ui.helpContract":
     "Nach Pilzturm und Erholung tritt der Obsidianbund an. Liefere laufende Produktion für Aufträge. Diese Magie fehlt beim Ausbau – die Prämie kann es wert sein.",
@@ -133,8 +138,9 @@ export const de = {
   "contract.rivalHigh": "Rivale erhöht den Einsatz",
   "contract.rivalRest": "Rivale regeneriert",
   "contract.rivalNormal": "Rivale liefert stetig",
-  "contract.resultPlayer": "Du hast Auftrag {number} gewonnen. +160 Magie.",
-  "contract.resultTie": "Auftrag {number}: Gleichstand. +80 Magie.",
+  "contract.resultPlayer":
+    "Du hast Auftrag {number} gewonnen. +{reward} Magie.",
+  "contract.resultTie": "Auftrag {number}: Gleichstand. +{reward} Magie.",
   "contract.resultRival": "Auftrag {number} ging an den Obsidianbund.",
   "contract.resultExpired": "Auftrag {number} ist ohne Gewinner abgelaufen.",
   "tower.wald.name": "Waldturm",
@@ -176,7 +182,8 @@ export const de = {
   "log.loss":
     "Der Obsidianbund gewinnt den Auftrag. Deine Türme bleiben verfügbar.",
   "log.expired": "Auftrag abgelaufen. Eine neue Gelegenheit folgt.",
-  "log.contract": "Auftrag {number}: 80 Magie liefern. 160 Magie gewinnen.",
+  "log.contract":
+    "Auftrag {number}: {target} Magie liefern. {reward} Magie gewinnen.",
   "log.recovery":
     "Erholung gemeistert. Dein Netzwerk gewinnt seine Kraft zurück.",
   "goal.awaken": "Erwecke deinen ersten Turm",

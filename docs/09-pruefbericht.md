@@ -1,71 +1,69 @@
-# Prüfbericht – Turm INC v0.1.1
+# Prüfbericht – Turm INC v0.3.0
 
-Stand: 4. Oktober 2026. Windows-x64-Prototyp implementiert und paketiert.
+Stand: 5. Oktober 2026. Verbindliche Regeln: [Sechs Elemente und neun Türme](12-elemente-und-tuerme.md). Historischer Vergleich: [Prüfbericht v0.2](09-pruefbericht-v02.md).
 
 ## Ergebnis
 
-- TypeScript-Prüfung erfolgreich.
-- 39 Regel-, Speicher- und Lokalisierungstests erfolgreich.
-- Fünf automatisierte Desktop-Szenarien gegen die gepackte Anwendung erfolgreich.
-- ZIP-Integritätsprüfung erfolgreich: 73 Einträge, rund 158,6 MiB.
-- Vier eingebundene Turmbilder stimmen bytegenau mit den vorhandenen Originaldateien überein. Die 33 Originalbilder wurden nicht verändert.
+- TypeScript-Prüfung erfolgreich; 83 automatisierte Tests in sechs Testdateien bestanden.
+- Acht Desktop-Szenarien gegen das fertig gepackte Windows-Programm bestanden. Ausschließlich isolierte temporäre Spielstände; kein echter Nutzerfortschritt verändert.
+- Drei komplette Durchläufe ohne geschenkte Ressourcen erreichen alle neun Türme nach 34–35 aktiven Minuten.
+- Deutsche und englische Ansichten visuell geprüft; kompakte aufklappbare Turmkarten, lokale Boni, Gruppenbedienung und kleine Fenster (angeforderte native Größe 1080×760).
+- Alle zehn verwendeten Bilder sind bytegleich zu den Originalen und auch innerhalb von app.asar geprüft. Bildinhaber **Nevico** bleibt in Oberfläche, Hilfe und Dokumentation genannt.
 
-## Geprüfte Spielregeln
+## Regeln, Wirtschaft und Migration
 
-Aktivierung und Entdeckung, exakt bezahlbare Käufe, abgewiesene Käufe, Stufenobergrenze, Pilzbonus, 15 Sekunden Modusbindung, kontinuierliche bewusste Erholung, Instabilitätsgrenzen und Restproduktion. Gleiche Zeitschritte bei unterschiedlichen Darstellungsintervallen liefern identische Ergebnisse. Produktion wird bei Verbesserungen nicht rückwirkend geändert.
+Geprüft sind die bisherige Einführung unabhängig von der erweiterten Turmliste, dauerhafte Freigabe, zwei gegensätzliche Erweckungsreihenfolgen und die exakten Preise 600 / 960 / 1.536 / 2.458 / 3.933 / 6.292. Eine Gleitkomma-Ungenauigkeit beim Aufrunden des dritten Preises wurde durch den Test gefunden und behoben. Fehlgeschlagene Erweckungen erhöhen keine Preise.
 
-Lieferung und Guthaben zählen erzeugte Magie nicht doppelt. Sieg innerhalb eines Schritts, Niederlage, Gleichstand, Ablauf, Abklingphase, erneuter Auftrag und einmalige Prämienauszahlung sind geprüft. Rivalenstrategie reagiert auf Rückstand und beachtet Erholungsgrenzen. Während Pause verändert sich keine Seite.
+Elementtests prüfen lokale Küchen-, Wissens- und Kristallboni, multiplikative Forschung, Lava-Nennproduktion, Wasser-Erholung und Luft-Bindung. Gruppenbefehle überspringen gebundene Türme, setzen keinen Zustand zurück und führen keine spätere Automatik aus. Pause sperrt auch Gruppenbefehle. Neun aktive Türme ergeben bei unterschiedlichen Darstellungsintervallen identische Simulationsergebnisse.
 
-Im Zehn-Minuten-Vergleich übertrifft bewusstes Steuern unbeaufsichtigten Normalbetrieb um mehr als die geforderten 30 %.
+Bestehende Wirtschaftsprüfungen für Bau, Raumverbesserungen, Anwerbung, Arbeitszuweisung, Forschung, Versorgung, Abriss und Speichergrenzen bestehen weiterhin. Zusätzliche Neun-Turm-Prüfungen decken knappe Magie, proportionale Kristallverteilung unabhängig von der Reihenfolge der Zustandskarten und die Grenze von 54 Bewohnern ab. Volle Ziellager stoppen die zugehörigen Einsätze. Grundmagieproduktion bleibt erhalten.
 
-## Vollständiger Ablauf
+Jede der vier Konkurrenzstufen ist mit Sieg, Niederlage, Gleichstand und Ablauf geprüft. Mengenbilanz einschließlich Überschuss nach Abschluss und einmaliger Prämie stimmt. Laufende Aufträge bewahren ihre Werte bei Erweckungen; erst der nächste Auftrag übernimmt die höhere Stufe. Ergebnisse behalten historische Ziele und Prämien. Der ursprüngliche Zehn-Minuten-Vergleich bestätigt weiterhin mindestens 30 % Vorteil durch aktives Management.
 
-Ein automatisierter Durchlauf über normale Spielaktionen und ohne geschenktes Guthaben schließt die Einführung nach rund **341 aktiven Sekunden (5:41 Minuten)** ab. Er hat dann drei aktive Türme, eine abgeschlossene bewusste Erholung und zwei entschiedene Aufträge. Dabei wurden 15 Betriebswechsel ausgeführt; der längste Abstand zwischen wirksamen Aktionen lag bei 45,3 Sekunden.
+Migrationen verwenden tatsächliche alte Formate der Speicherversionen 1, 2 und 3. Guthaben, Räume, Minions, Forschungen, laufende Aufträge und Bindungen bleiben erhalten; insbesondere wird eine bestehende Luftturm-Bindung nicht verkürzt. Neue Türme sind inaktiv und leer. Abgeschlossene v0.2-Einführungen geben die Erweiterung frei. Alte Auftragsmeldungen werden mit ihren ursprünglichen Werten lokalisiert. Beschädigte Daten werden vor der Erweiterung abgelehnt. Laden lässt die Quelldatei unverändert; Speichern bewahrt die gültige alte Fassung als Sicherung.
 
-Dies ist eine reproduzierbare Regelprüfung, keine gemessene menschliche Spielzeit. Die Strategie kennt bereits Regeln und Ziele und entscheidet unmittelbar. Die Zahlen belegen Erreichbarkeit und einen aktiven Rhythmus, nicht langfristigen Spielspaß oder optimale Balance.
+## Vollständige Durchläufe und Balancebeobachtungen
 
-## Desktop-Prüfung
+Alle drei Durchläufe starten mit null Magie, erwecken Wald, verbessern ihn auf Stufe 2 und bauen ihre Wirtschaft ausschließlich mit regulären Aktionen auf. Drei Bewohner betreiben je eine Küche, Bibliothek und einen Resonanzraum. Der Test wechselt einzelne Türme bei 60 Instabilität in Erholung und bei 20 zurück in Hochleistung. Es werden keine Aufträge beliefert; Niederlagen verhindern die Freischaltungen nicht. Die Strategien kaufen neue Türme auf Stufe 1 und optimieren nicht zusätzlich deren Verbesserungen.
 
-Die Tests verwenden eigene temporäre Spielstände und verändern keinen echten Nutzerfortschritt.
+Die v0.2-Einführung mit den neuen Elementboni endet bei allen Routen nach **1.083,4 Sekunden (18:03)**. Die längste Wartezeit auf eine gewünschte Anschaffung beträgt **570,2 Sekunden vor dem Blitzturm**; währenddessen werden weiterhin Betriebswechsel ausgeführt. Der erste Erweiterungsturm wird bei 1.209,5 Sekunden erweckt.
 
-1. Frischer Start, Fortsetzen, kostenlose Aktivierung, Hochleistung und Modusbindung; lokale Bilder laden bei offline geschaltetem Browserkontext. Fokusverlust, Minimieren und ein simuliertes Systemsuspendierungssignal pausieren. Wiederöffnen behält Guthaben, Turmzustände, Zeit und Wettbewerb ohne Offline-Fortschritt.
-2. Ein vorbereiteter Netzwerkzustand zeigt alle Türme und einen laufenden Auftrag. Auswahl und Lieferquote funktionieren. Kleine Fenster erzeugen kein horizontales Scrollen. Ein tatsächlicher Dateisystemfehler wird sichtbar gemeldet; erneutes Speichern funktioniert nach Behebung.
-3. Eine beschädigte Hauptdatei wird erklärt. Die Sicherung lässt sich ausdrücklich fortsetzen, während die beschädigte Datei archiviert erhalten bleibt.
-4. Ein zweiter Programmstart beendet seine zusätzliche Instanz, verwendet das bestehende Fenster und überschreibt keinen Spielstand.
+| Route | Reihenfolge neuer Türme | Alle neun aktiv | Wechsel im gesamten Test | Wechsel im abschließenden 600-s-Fenster | Wissen in diesem Fenster |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Produktion zuerst, spezialisierte Räume | Lava, Sonne, Mond, Eis, Wind, Fels | 2.040,8 s (34:01) | 322 | 133 | 45 |
+| Erde zuerst, spezialisierte Räume | Fels, Eis, Wind, Mond, Sonne, Lava | 2.075,9 s (34:36) | 328 | 134 | 45 |
+| Andere Reihenfolge, gemischte Räume | Mond, Sonne, Wind, Lava, Eis, Fels | 2.062,3 s (34:22) | 325 | 134 | 37,5 |
 
-5. Sprachwechsel Deutsch/Englisch im pausierten und laufenden Spiel sowie in der Hilfe. Der pausierte Spielzustand bleibt exakt gleich. Zahlenformatierung, alte Chroniktexte, Erholung, Auftrag, Pausegrund und native Neustart-Bestätigung wechseln mit. Ein tatsächlicher Schreibfehler der Spracheinstellung wird angezeigt. Neues Spiel und erneuter Programmstart behalten Englisch. Der Test bestätigt den nativen Dialog über eine kontrollierte Antwort im Testprozess.
+Nach der neunten Erweckung verlegen die spezialisierten Routen Küche nach Fels, Bibliothek nach Sonne und Resonanzraum nach Mond. Die gemischte Route verwendet Lava, Eis und Wind. Alle drei kaufen Studienordnung und Kristallzucht über regulär erarbeitetes Wissen. Die folgende gleich lange Beobachtung bestätigt 20 % zusätzlichen Wissensertrag im Sonnenturm. Die Versorgung liegt am Ende immer bei 100 %. Pro Route werden 15 Aufträge entschieden; mittlere gemessene Auftragsdauer rund 93 aktive Sekunden (Aufzeichnung in 100-ms-Schritten).
 
-Die Screenshots wurden visuell geprüft. Ein zunächst überlagerter Ausbauknopf bei Windows-Skalierung wurde durch inhaltsabhängige Rasterzeilen behoben. Die große Turmansicht zeigt das vollständige Bild vor einer unscharfen Erweiterung desselben Motivs.
+**Grenzen:** Dies belegt Erreichbarkeit und die vorgesehenen lokalen Effekte, keine optimale Strategie oder menschliche Spielzeit. Die Wechselhäufigkeit von 133–134 Einzelwechseln in zehn Minuten entspricht ungefähr einem Wechsel alle 4,5 Sekunden. Elementbefehle können mehrere davon bündeln; ihre reale Entlastung wurde funktional, aber noch nicht durch menschliche Spieltests bewertet. Drei Bewohner genügen in diesen Routen; wiederholte Arbeitsumverteilung ist nicht erforderlich. Die lange frühe Wartephase, das knappe Zeitgefälle zwischen Kaufreihenfolgen und die Tendenz zu fest spezialisierten Räumen bleiben Schwerpunkte für den nächsten Spieltest. Die vorgegebenen Balancewerte wurden deshalb nicht eigenmächtig verändert.
 
-![Waldturm](images/prototyp-waldturm.png)
+## Desktop-Szenarien
 
-![Netzwerk mit laufendem Auftrag](images/prototyp-netzwerk.png)
+1. Frischer Offline-Start, Erweckung, Produktion, Modusbindung, tatsächlicher Fokuswechsel, Minimieren, Suspendierungssignal und Wiederöffnen ohne Offline-Ertrag.
+2. Auftragssteuerung, Turmauswahl und kleine Fenster; ein echter Speicherfehler wird sichtbar und kann nach Behebung erneut gespeichert werden.
+3. Beschädigte Hauptdatei, verständlicher Hinweis, ausdrückliche Wiederaufnahme der Sicherung und Archivierung der defekten Datei.
+4. Ein zweiter Programmstart verwendet die bestehende Instanz und verändert keinen Spielstand.
+5. Sprachwechsel in Spiel, Pause und Hilfe; historische v1-Texte, Zahlenformate, dauerhafte Sprachwahl sowie Fehler beim Speichern der Sprache.
+6. Raumwirtschaft: Bauen, Arbeitsgruppen, Forschung, vierter Platz, Raumverbesserung, bestätigter/abgebrochener Abriss, Anwerbung, Kristallerzeugung und Stabilisierung; Neustart erhält den Zustand.
+7. Alle neun Türme, Auf-/Zuklappen einer Elementgruppe per Tastatur, Gruppen-Erholung mit gebundenem Pilzturm, alle sechs neuen Bildansichten, Wasserbonus, Stufe-4-Auftrag und englische Räume bei kleiner Fenstergröße. Pause und Neustart bewahren Türme, Wirtschaft und Auftragsregeln.
+8. Tatsächliche v0.2-Migration im gepackten Programm; danach freie Wahl des Mondturms als erste Erweiterung und korrekter nächster Preis von 960 Magie.
 
-## Mehrsprachigkeit
+## Ansichten
 
-Katalogschlüssel und Parameter sind vollständig abgeglichen. Verschachtelte Turmnamen und deutsche/englische Zahlenformate sind geprüft. Version-1-Spielstände werden ohne Änderung der Wirtschaft übernommen; die Originaldatei bleibt bis zum regulären Speichern unverändert und danach als Sicherung erhalten. Fehlerhafte Meldungsdaten werden abgelehnt. Spracheinstellungen überleben neue Spiele, ungültige Einstellungen werden vor einer neuen Wahl archiviert. Englische Ansichten wurden bei normaler und kleiner Fenstergröße visuell geprüft.
+![Elementgruppen und Betrieb auf Deutsch](images/v03-elements-de.png)
 
-![Englisches Netzwerk](images/prototyp-english.png)
+![Sonnenturm und Räume auf Englisch im kleinen Fenster](images/v03-elements-en-small.png)
 
-Weitere Sprachen können über die [Lokalisierungsstruktur](10-mehrsprachigkeit.md) ergänzt werden.
-
-## Bildnachweis
-
-Bildinhaber: **Nevico**. Der Name wird in der Fußzeile und in der Spielhilfe genannt, auf Deutsch und Englisch. Das Windows-Paket enthält diese Ergänzung.
+Die Screenshots stammen aus Desktop-Testständen mit vorbereiteten Zuständen; sie sind keine Belege für den ressourcenfreien Start. Dieser wird getrennt in den vollständigen Durchläufen geprüft.
 
 ## Auslieferung
 
-- Startbare Anwendung: `out/Turm INC-win32-x64/Turm INC.exe`.
-- Vollständig entpackbares Paket: `out/make/zip/win32/x64/Turm-INC-0.1.1-win32-x64.zip`.
-- ZIP-SHA256: `130d29377f8cfaacf8ef1781c5537b1cb095bd0f640be2feef33d6d869067ef8`.
-- Das gesamte Verzeichnis beziehungsweise ZIP wird benötigt; die EXE nicht allein verschieben.
-- Laufzeit, Oberfläche und Assets sind enthalten. Kein Entwicklungsserver, Benutzerkonto oder Netzwerk erforderlich.
-
-## Bewusste Grenzen und nächster Spieltest
-
-Die Betriebs- und Auftragswerte entsprechen der freigegebenen Anfangskonfiguration. Es gibt keine langfristige Rivalenentwicklung, weiteren Regionen oder variierenden Auftragsarten. Bei niedrigen Fensterhöhen ist vertikales Scrollen vorgesehen.
-
-Menschlich zu prüfen sind Verständlichkeit ohne Erklärung, die Wahl zwischen Auftrag und Ausbau und die Abwechslung der Betriebsentscheidungen. Falls regelmäßiges Umschalten die einzige interessante Handlung bleibt, wird zuerst dieser Kern überarbeitet. Die vorhandenen automatisierten Tests behaupten keine abgeschlossene Spielspaßprüfung.
+- Anwendung: `out/Turm INC-win32-x64/Turm INC.exe`.
+- Paket: `out/make/zip/win32/x64/Turm-INC-0.3.0-win32-x64.zip`.
+- ZIP vollständig entpacken und die enthaltene EXE starten. Laufzeit und Bilder sind enthalten. Kein Netzwerk und kein Entwicklungsserver erforderlich.
+- ZIP-Integrität einschließlich CRC geprüft: **73 Einträge, 165,0 MiB**. Das enthaltene app.asar ist bytegleich mit dem gegen Desktop-Tests geprüften Paket.
+- SHA256: `3a8b56c9232bd9a56032fb37977e6d36347ded9bfa12b4dbe13a721b1fbdf35b`.
 
 ## Reproduzieren
 
@@ -74,10 +72,7 @@ npm ci
 npm run check
 npm run make
 npm run test:desktop
+npm exec vitest -- run tests/expansion-playthrough.test.ts --disableConsoleIntercept
 ```
 
-Für die Ablaufmessung mit sichtbarer Konsolenausgabe:
-
-```powershell
-npm exec vitest -- run tests/engine.test.ts --disableConsoleIntercept
-```
+Der Quellcode wird im öffentlichen Repository [OnekoSL/turm-inc](https://github.com/OnekoSL/turm-inc) gepflegt. Das geprüfte Windows-Paket liegt lokal bereit; ein GitHub-Release mit ZIP-Download ist separat zu veröffentlichen.

@@ -1,3 +1,4 @@
+import { legacyFixture } from "./legacy-fixture";
 import { afterEach, describe, expect, it } from "vitest";
 import {
   mkdtempSync,
@@ -58,8 +59,9 @@ describe("Language-independent presentation and saved games", () => {
   it("migrates v1 German logs, keeps unknown text and preserves all game amounts", () => {
     const d = temp();
     const state = {
-      ...newGame(),
+      ...legacyFixture(newGame(), 1),
       schemaVersion: 1,
+      balanceVersion: 1,
       magic: 1234.5,
       activeSeconds: 91,
       pauseReason: "Dein Netzwerk wartet.",
@@ -76,11 +78,11 @@ describe("Language-independent presentation and saved games", () => {
     expect(loaded.blocked).toBe(false);
     expect(loaded.issue).toBeNull();
     expect(loaded.game).toMatchObject({
-      schemaVersion: 2,
+      schemaVersion: 4,
       magic: 1234.5,
       activeSeconds: 91,
     });
-    expect(loaded.game?.towers).toEqual(state.towers);
+    expect(loaded.game?.towers).toMatchObject(state.towers);
     expect(renderMessage("en", loaded.game!.log[0].text)).toBe(
       "Forest Tower reaches level 3.",
     );

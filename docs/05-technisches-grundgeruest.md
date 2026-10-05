@@ -1,5 +1,8 @@
 # Technisches Grundgerüst
 
+> Aktueller Stand v0.3: [Sechs Elemente und neun Türme](12-elemente-und-tuerme.md). Dort festgelegte Erweiterungen haben Vorrang vor älteren Angaben.
+
+> Aktueller Stand v0.2: [Bewohner, Räume und Ressourcen](11-bewohner-und-raeume.md). Diese Erweiterung hat bei abweichenden Angaben Vorrang.
 Verbindlicher Stand: Windows-x64-Desktop-Anwendung mit Electron, React, TypeScript, Vite und Electron Forge; kein Server. [Prototypspezifikation](08-prototyp-spezifikation.md).
 
 ## Zuständigkeiten
@@ -14,7 +17,7 @@ Verbindlicher Stand: Windows-x64-Desktop-Anwendung mit Electron, React, TypeScri
 Ausschließlich aktive Spielzeit; monotone Uhr während des Betriebs. Fokusverlust, Minimieren und Suspendierung stoppen die Simulation. Beim Fortsetzen wird die Echtzeitreferenz neu gesetzt. Kein Offline-Ertrag. Produktion wird mit der veränderlichen Instabilität integriert. Ereignisse innerhalb eines Schritts werden zeitlich aufgelöst.
 
 ## Speicherung
-Main-Prozess schreibt nach Aktionen, alle zehn Sekunden, bei Pause und vor dem Schließen. Ein Spielstand und letzte gültige Sicherung im Anwendungsdatenverzeichnis; beschädigte Dateien bleiben zur Diagnose erhalten. Speicherversion 2 mit sprachneutralen Meldungsschlüsseln; deutsche Spielstände aus Version 1 werden beim Laden migriert. Unbekannte zukünftige Versionen werden nicht still ersetzt. Nur eine Anwendung darf den Spielstand verwenden.
+Main-Prozess schreibt nach Aktionen, alle zehn Sekunden, bei Pause und vor dem Schließen. Ein Spielstand und letzte gültige Sicherung im Anwendungsdatenverzeichnis; beschädigte Dateien bleiben zur Diagnose erhalten. Speicherversion 3 mit sprachneutralen Meldungsschlüsseln; deutsche Spielstände aus Version 1 und 2 werden beim Laden migriert. Unbekannte zukünftige Versionen werden nicht still ersetzt. Nur eine Anwendung darf den Spielstand verwenden.
 
 ## Entwicklung und Paketierung
 Versionen werden im package-lock.json festgehalten. npm start startet die Entwicklung; npm run check prüft Typen und Regeln; npm run make erzeugt ein entpackbares Windows-x64-Paket. npm run test:desktop prüft die gepackte Anwendung mit einem eigenen temporären Spielstand. Keine Veröffentlichung, Konten oder Telemetrie.

@@ -1,6 +1,18 @@
 # Turm INC
 
-Ein Fantasy-Incremental mit aktivem Management für Windows. Drei magische Türme, ein instabiler Betrieb und ein Rivale, der um dieselben Aufträge wirbt.
+Ein Fantasy-Incremental mit aktivem Management für Windows. Neun magische Türme in sechs Elementen, ein instabiler Betrieb und ein Rivale, der um dieselben Aufträge wirbt.
+
+## Neu in v0.3
+
+Fels, Eis, Lava, Wind, Sonne und Mond ergänzen Wald, Pilz und Blitz. Erde, Wasser, Feuer, Luft, Licht und Schatten besitzen lokale Boni für Betrieb oder Räume. Nach der bisherigen Einführung kannst du die sechs neuen Türme in beliebiger Reihenfolge erwecken. Elementbefehle vereinfachen gemeinsame Betriebswechsel; der Obsidianbund wächst nach vier sichtbaren Konkurrenzstufen. Bestehende Spielstände werden übernommen.
+
+[Verbindliche Regeln v0.3](docs/12-elemente-und-tuerme.md) · [Prüfbericht](docs/09-pruefbericht.md)
+
+## Bewohner und Räume seit v0.2
+
+Bewohner beziehen Wohnräume und arbeiten in Küche, Bibliothek und Resonanzraum. Nahrung hält ihre Arbeitsleistung aufrecht, Wissen finanziert fünf Forschungen und Harmoniekristalle stabilisieren die Türme automatisch. Lager und begrenzte Raumplätze erfordern Entscheidungen über den Innenausbau. Der Einstieg beginnt ab Waldturm Stufe 2.
+
+[Regeln der Erweiterung](docs/11-bewohner-und-raeume.md) · [Windows-Paket bauen](#entwicklung)
 
 ## Verbindliche Planung
 
@@ -23,7 +35,7 @@ npm run test:desktop
 
 Das ZIP-Paket entsteht unter out/make/zip/win32/x64. Komplett entpacken und Turm INC.exe starten. Die Anwendung benötigt keinen Entwicklungsserver und keine Internetverbindung. Fortschritt wird im Windows-Anwendungsdatenverzeichnis von Turm INC gespeichert. Bei Fokusverlust pausiert die ganze Welt; bei Rückkehr bewusst fortsetzen.
 
-Die 33 Originalbilder im Projektstamm bleiben unverändert. Vier davon werden als lokale Spielassets verwendet. Keine Konten, Cloud-Speicherung oder Telemetrie.
+Die 33 Originalbilder im Projektstamm bleiben unverändert. Zehn davon werden als lokale Spielassets verwendet. Keine Konten, Cloud-Speicherung oder Telemetrie.
 
 **Bildinhaber: Nevico.** Der Bildnachweis steht auch im Spiel und in der [Bilddokumentation](docs/03-tuerme-und-bilder.md).
 
@@ -35,8 +47,11 @@ Deutsch und Englisch sind vollständig eingebaut. Im Start-/Pausendialog, in der
 
 1. Anwendung starten und „Dein Netzwerk beginnen“ wählen.
 2. Den Waldturm kostenlos erwecken und erste Magie sammeln.
-3. Hochleistung und Erholung ausprobieren: Erholung von mindestens 40 auf 20 Instabilität eröffnet zusammen mit dem Pilzturm die Konkurrenz.
-4. Lieferanteile für Aufträge abwägen; gelieferte Magie fehlt beim Ausbau.
-5. Bei einer Pause oder einem Fensterwechsel wartet die ganze Welt. Zum Weiterspielen „Fortsetzen“ wählen.
+3. Den Waldturm auf Stufe 2 verbessern. Unter „Räume“ Wohnräume und eine Küche bauen, dann Minions zuweisen.
+4. Hochleistung und Erholung ausprobieren: Erholung von mindestens 40 auf 20 Instabilität eröffnet zusammen mit dem Pilzturm die Konkurrenz.
+5. Lieferanteile für Aufträge abwägen; gelieferte Magie fehlt beim Ausbau.
+6. Bibliothek und Resonanzraum besetzen, forschen und im Turmbetrieb die Kristallstabilisierung wählen.
+7. Nach Abschluss der Einführung weitere Elemente erwecken; Elementbefehle erreichen alle verfügbaren Türme der Kategorie.
+8. Bei einer Pause oder einem Fensterwechsel wartet die ganze Welt. Zum Weiterspielen „Fortsetzen“ wählen.
 
 [Prüfbericht und bekannte Grenzen](docs/09-pruefbericht.md). Der Prototyp nutzt feste Anfangswerte; Spielgefühl und langfristige Balance brauchen menschliche Spieltests.

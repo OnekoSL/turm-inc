@@ -1,5 +1,8 @@
 # Entwicklungsplan und Entscheidungen
 
+> Aktueller Stand v0.3: [Sechs Elemente und neun Türme](12-elemente-und-tuerme.md). Dort festgelegte Erweiterungen haben Vorrang vor älteren Angaben.
+
+> Aktueller Stand v0.2: [Bewohner, Räume und Ressourcen](11-bewohner-und-raeume.md). Diese Erweiterung hat bei abweichenden Angaben Vorrang.
 ## Beschlossen am 4. Oktober 2026
 Windows-Desktop-Anwendung; drei feste Türme; regelmäßiges aktives Management; Instabilität senkt Ertrag ohne Schäden; KI-Rivale konkurriert um Aufträge; vollständige Pause außerhalb des Spiels. Umsetzung des [Prototypplans](08-prototyp-spezifikation.md) ist beauftragt.
 
@@ -20,4 +23,4 @@ Weitere Regionen, Turmrollen, Spezialisierungen, Prestige und umfangreichere Kon
 
 ## Umsetzungsstand
 
-Der freigegebene Prototyp wurde implementiert und als Windows-Paket gebaut. Typprüfung, 31 Regel-/Speichertests und vier Desktop-Szenarien bestehen. Der [Prüfbericht](09-pruefbericht.md) dokumentiert den vollständigen automatisierten Durchlauf, Screenshots, Auslieferung und Grenzen. Menschliche Bewertung von Verständlichkeit und Spielspaß ist der nächste Schritt.
+Der Grundprototyp und die Erweiterung v0.2 sind implementiert. Der [Prüfbericht](09-pruefbericht.md) dokumentiert den aktuellen Teststand, den vollständigen automatisierten Durchlauf und das Windows-Paket. Menschliche Bewertung von Wartezeiten, Raumverteilung und Arbeitsumverteilung bleibt erforderlich.

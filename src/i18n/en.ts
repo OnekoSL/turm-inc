@@ -1,5 +1,9 @@
+import { elementsEN } from "./elements-en";
+import { expansionEN } from "./expansion-en";
 import type { TranslationKey } from "./de";
 export const en = {
+  ...elementsEN,
+  ...expansionEN,
   "credits.imageOwner": "Image owner: Nevico",
   "ui.railNote": "Great magic begins with a small tower.",
   "ui.created": "{amount} magic created",
@@ -36,7 +40,8 @@ export const en = {
   "ui.instability": "Instability",
   "ui.selectedInstability": "Selected tower instability",
   "ui.dormantHint": "A dormant tower awaits your magic.",
-  "ui.recovering": "Decreasing by 1 per second. Recovery yields 20% output.",
+  "ui.recovering":
+    "Decreasing by {rate} per second. Recovery yields 20% output.",
   "ui.recovered": "Fully recovered. Recovery yields 20% output.",
   "ui.strainMax": "Maximum strain.",
   "ui.strainRising": "Increasing by {rate} per second.",
@@ -51,7 +56,7 @@ export const en = {
   "mode.highHint": "More power, more strain",
   "mode.restHint": "Ease the strain and recover",
   "ui.modeHint":
-    "Switching locks the mode for 15 seconds. Existing instability remains.",
+    "Switching locks the mode for {seconds} seconds. Existing instability remains.",
   "ui.upgradeTitle": "UPGRADE TOWER",
   "ui.awakenTitle": "AWAKEN TOWER",
   "ui.newBeginning": "A new beginning",
@@ -74,7 +79,7 @@ export const en = {
   "ui.nextStep": "YOUR NEXT STEP",
   "ui.goalProgress": "Progress towards the next objective",
   "ui.chronicle": "FROM YOUR REALM",
-  "ui.prototype": "PROTOTYPE 0.1.1",
+  "ui.prototype": "PROTOTYPE 0.3.0",
   "ui.saveFailed": "Save failed",
   "ui.saved": "Progress saved locally",
   "ui.retry": "Try again",
@@ -102,7 +107,7 @@ export const en = {
     "Towers generate magic automatically. Invest it in upgrades or new towers. Your total generated magic unlocks new locations.",
   "ui.helpRecoveryTitle": "Output & recovery",
   "ui.helpRecovery":
-    "Normal operation builds strain slowly; overdrive builds it faster. Start recovery at 40 instability or above and let it fall to 20. Every switch locks the mode for 15 seconds.",
+    "Normal operation builds strain slowly; overdrive builds it faster. Start recovery at 40 instability or above and let it fall to 20. Every switch locks the mode for 15 seconds, or 12 seconds for air towers.",
   "ui.helpContractTitle": "A shared objective",
   "ui.helpContract":
     "Once you awaken the Mushroom Tower and complete a recovery, the Obsidian Alliance joins the contest. Divert production to contracts. That magic cannot fund upgrades, but the reward may be worth it.",
@@ -132,8 +137,8 @@ export const en = {
   "contract.rivalHigh": "Rival raises the stakes",
   "contract.rivalRest": "Rival is recovering",
   "contract.rivalNormal": "Rival is delivering steadily",
-  "contract.resultPlayer": "You won contract {number}. +160 magic.",
-  "contract.resultTie": "Contract {number}: a tie. +80 magic.",
+  "contract.resultPlayer": "You won contract {number}. +{reward} magic.",
+  "contract.resultTie": "Contract {number}: a tie. +{reward} magic.",
   "contract.resultRival": "The Obsidian Alliance won contract {number}.",
   "contract.resultExpired": "Contract {number} expired without a winner.",
   "tower.wald.name": "Forest Tower",
@@ -175,7 +180,8 @@ export const en = {
   "log.loss":
     "The Obsidian Alliance wins the contract. Your towers remain available.",
   "log.expired": "Contract expired. Another opportunity will follow.",
-  "log.contract": "Contract {number}: deliver 80 magic. Win 160 magic.",
+  "log.contract":
+    "Contract {number}: deliver {target} magic. Win {reward} magic.",
   "log.recovery": "Recovery mastered. Your network regains its strength.",
   "goal.awaken": "Awaken your first tower",
   "goal.awakenHint": "The Forest Tower awaits. Awakening it is free.",

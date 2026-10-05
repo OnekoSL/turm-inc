@@ -1,3 +1,4 @@
+import { legacyFixture } from "./legacy-fixture";
 import { afterEach, describe, expect, it } from "vitest";
 import {
   mkdtempSync,
@@ -26,6 +27,55 @@ afterEach(() => {
 });
 
 describe("Lokaler Spielstand", () => {
+  it("migrates v2 with every old economic value intact and no colony gifts", () => {
+    const d = directory(),
+      store = new SaveStore(d);
+    const colony = newGame().colony;
+    const old = legacyFixture(newGame(), 2);
+    const legacy = {
+      ...old,
+      schemaVersion: 2,
+      balanceVersion: 1,
+      magic: 812.5,
+      lifetimeMagic: 1200,
+      activeSeconds: 600,
+      hasCompletedRecovery: true,
+      contractsResolved: 2,
+    };
+    legacy.towers.wald.level = 3;
+    legacy.towers.pilz.level = 2;
+    legacy.towers.blitz.level = 1;
+    legacy.towers.wald.lock = 12.5;
+    legacy.towers.wald.instability = 53;
+    legacy.contract = {
+      ...legacy.contract,
+      phase: "cooldown",
+      number: 2,
+      remaining: 25,
+    };
+    const source = JSON.stringify(legacy);
+    writeFileSync(store.path, source);
+    const loaded = store.load();
+    expect(loaded.blocked).toBe(false);
+    expect(loaded.issue).toBeNull();
+    const { colony: migrated, schemaVersion } = loaded.game!;
+    expect(schemaVersion).toBe(4);
+    expect(loaded.game).toMatchObject({
+      magic: 812.5,
+      lifetimeMagic: 1200,
+      activeSeconds: 600,
+      hasCompletedRecovery: true,
+      contractsResolved: 2,
+      balanceVersion: 2,
+    });
+    expect(loaded.game!.towers).toMatchObject(legacy.towers);
+    expect(loaded.game!.contract).toMatchObject(legacy.contract);
+    expect(migrated).toEqual(colony);
+    expect(readFileSync(store.path, "utf8")).toBe(source);
+    store.save(loaded.game!);
+    expect(readFileSync(store.backup, "utf8")).toBe(source);
+    expect(new SaveStore(d).load().game).toEqual(loaded.game);
+  });
   it("round-trips without altering game time or awarding offline magic", () => {
     const store = new SaveStore(directory());
     const s = newGame();

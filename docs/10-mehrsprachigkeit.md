@@ -1,5 +1,8 @@
 # Mehrsprachigkeit – v0.1.1
 
+> Aktueller Stand v0.3: [Sechs Elemente und neun Türme](12-elemente-und-tuerme.md). Dort festgelegte Erweiterungen haben Vorrang vor älteren Angaben.
+
+> Aktueller Stand v0.2: [Bewohner, Räume und Ressourcen](11-bewohner-und-raeume.md). Diese Erweiterung hat bei abweichenden Angaben Vorrang.
 Deutsch und Englisch sind eingebaut. Deutsch bleibt die Voreinstellung. Die Auswahl steht in der Kopfleiste und in Start-/Pausen- sowie Hilfedialogen. Sie wirkt sofort, benötigt keinen Neustart und setzt eine pausierte Welt nicht fort.
 
 ## Übersetzungsumfang
@@ -20,7 +23,9 @@ Die Simulation erzeugt sprachneutrale Meldungen wie `{ key: "log.upgrade", param
 
 ## Vorhandene Spielstände
 
-Die neue Speicherversion ist 2; Balanceversion und Spielregeln bleiben unverändert. Beim Laden einer Version-1-Datei werden bekannte deutsche Meldungen in Schlüssel und Parameter überführt. Guthaben, Ertrag, aktive Zeiten, Bindungen, Türme und Wettbewerb bleiben erhalten. Unbekannte historische Texte bleiben als Originaltext lesbar. Die Datei wird beim Lesen nicht geändert; der nächste reguläre Speichervorgang behält die alte gültige Datei als Sicherung. Unbekannte zukünftige Versionen werden weiterhin gesperrt und nicht überschrieben.
+Die aktuelle Speicherversion ist 3; Balanceversion und Spielregeln bleiben unverändert. Beim Laden einer Version-1-Datei werden bekannte deutsche Meldungen in Schlüssel und Parameter überführt. Guthaben, Ertrag, aktive Zeiten, Bindungen, Türme und Wettbewerb bleiben erhalten. Unbekannte historische Texte bleiben als Originaltext lesbar. Die Datei wird beim Lesen nicht geändert; der nächste reguläre Speichervorgang behält die alte gültige Datei als Sicherung. Unbekannte zukünftige Versionen werden weiterhin gesperrt und nicht überschrieben.
+
+Die Raum- und Ressourcentexte liegen zusätzlich in `expansion-de.ts` und `expansion-en.ts` und werden in die typisierten Hauptkataloge eingebunden.
 
 ## Weitere Sprache ergänzen
 

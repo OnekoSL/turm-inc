@@ -1,5 +1,8 @@
 # Verbindlicher Desktop-Prototyp v0.1.1
 
+> Aktueller Stand v0.3: [Sechs Elemente und neun Türme](12-elemente-und-tuerme.md). Dort festgelegte Erweiterungen haben Vorrang vor älteren Angaben.
+
+> Aktueller Stand v0.2: [Bewohner, Räume und Ressourcen](11-bewohner-und-raeume.md). Diese Erweiterung hat bei abweichenden Angaben Vorrang.
 Stand: 4. Oktober 2026. Vom Nutzer zur Umsetzung freigegeben. Diese Spezifikation ersetzt die früheren offenen Browser-, Offline- und Konkurrenzvorschläge.
 
 ## Umfang

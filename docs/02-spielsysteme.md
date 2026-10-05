@@ -1,5 +1,8 @@
 # Spielsysteme
 
+> Aktueller Stand v0.3: [Sechs Elemente und neun Türme](12-elemente-und-tuerme.md). Dort festgelegte Erweiterungen haben Vorrang vor älteren Angaben.
+
+> Aktueller Stand v0.2: [Bewohner, Räume und Ressourcen](11-bewohner-und-raeume.md). Diese Erweiterung hat bei abweichenden Angaben Vorrang.
 Die verbindlichen Formeln, Startwerte, Betriebsarten, Freischaltungen und Auftragsregeln stehen in [Prototypspezifikation v0.1](08-prototyp-spezifikation.md).
 
 ## Festgelegter Ablauf

@@ -1355,6 +1355,250 @@ button {
   font-size: 11px;
   color: #bec7b6;
 }
+
+/* The shared economy stays above the tower view; detailed management lives in tabs. */
+.colony-bar {
+  margin: 14px 30px 0;
+  padding: 16px 18px;
+  border: 1px solid #34422f;
+  border-radius: 10px;
+  background: #182019;
+}
+.colony-resources {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(120px, 1fr)) minmax(230px, 1.5fr)
+    100px;
+  gap: 18px;
+}
+.colony-resource,
+.colony-population {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 12px;
+  color: #acbaa1;
+  min-width: 0;
+}
+.colony-resource strong {
+  color: #e2e8d8;
+  font-size: 22px;
+  font-weight: 400;
+}
+.colony-resource strong small {
+  font-size: 12px;
+  color: #97a78d;
+}
+.colony-population strong {
+  font-size: 12px;
+  font-weight: 500;
+  color: #e2e8d8;
+}
+.colony-population > span:first-child {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.colony-bar button,
+.room-card button,
+.research-list button,
+.resonance-options button {
+  border: 1px solid #56664a;
+  border-radius: 6px;
+  background: #273322;
+  color: #e0e8d3;
+  padding: 8px 10px;
+  font: inherit;
+  cursor: pointer;
+}
+.colony-bar button:disabled,
+.room-card button:disabled,
+.research-list button:disabled,
+.resonance-options button:disabled {
+  opacity: 0.38;
+  cursor: default;
+}
+.research-open {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.economy-notes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin-top: 12px;
+  font-size: 11px;
+  color: #a2b297;
+}
+.panel-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.panel-tabs button {
+  flex: 1;
+  background: #1b251a;
+  border: 1px solid #3d4f34;
+  border-radius: 6px;
+  padding: 10px;
+  color: #b9c8ac;
+  cursor: pointer;
+}
+.panel-tabs button[aria-selected="true"],
+.resonance-options button[aria-pressed="true"] {
+  background: #bed1a1;
+  color: #152015;
+}
+.rooms-panel {
+  max-height: 820px;
+  overflow: auto;
+  padding-right: 4px;
+  scrollbar-color: #56664a transparent;
+}
+.rooms-panel > p {
+  color: #b5c4aa;
+  font-size: 12px;
+  margin: 10px 0;
+}
+.room-card {
+  border: 1px solid #34442e;
+  padding: 14px;
+  border-radius: 9px;
+  margin: 12px 0;
+  background: #172019;
+}
+.room-card.built {
+  border-color: #667d54;
+}
+.room-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #d9e3cb;
+}
+.room-title h3 {
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0;
+}
+.room-title small {
+  margin-left: auto;
+  font-size: 10px;
+  white-space: nowrap;
+}
+.room-card p,
+.resonance-panel p,
+.research-card p {
+  font-size: 12px;
+  line-height: 1.6;
+  color: #adbea0;
+  margin: 10px 0;
+}
+.room-card > small {
+  display: block;
+  font-size: 11px;
+  color: #c9d5bb;
+  margin: 12px 0 6px;
+}
+.room-card .room-buy {
+  width: 100%;
+}
+.room-card .demolish {
+  display: block;
+  border: 0;
+  background: none;
+  color: #bcae94;
+  font-size: 11px;
+  padding: 8px 0 0;
+}
+.worker-control {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #d0dec0;
+  margin: 12px 0;
+}
+.worker-control select {
+  max-width: 55%;
+  background: #24331f;
+  color: #e0e8d3;
+  padding: 6px;
+  border: 1px solid #617650;
+  border-radius: 4px;
+}
+.demolition-confirm {
+  border-top: 1px solid #8e7851;
+  margin-top: 10px;
+}
+.demolition-confirm button {
+  margin: 4px 6px 0 0;
+  font-size: 11px;
+}
+.resonance-panel {
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid #34442e;
+}
+.resonance-panel h3 {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #cddfc0;
+}
+.resonance-options {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+}
+.resonance-options button {
+  flex: 1;
+  font-size: 12px;
+}
+.research-list article {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: space-between;
+  border-top: 1px solid #3a4c31;
+  padding: 14px 0;
+}
+.research-list h3 {
+  font-size: 15px;
+  margin: 0;
+  color: #d9e3cb;
+}
+.research-list p {
+  margin: 5px 0;
+}
+.research-list small {
+  color: #c3d5b1;
+}
+.research-list button {
+  min-width: 100px;
+  font-size: 12px;
+}
+.help-card {
+  max-height: calc(100vh - 40px);
+  overflow: auto;
+}
+@media (max-width: 1200px) {
+  .colony-bar {
+    margin: 12px 20px 0;
+  }
+  .colony-resources {
+    gap: 12px;
+    grid-template-columns:
+      repeat(3, minmax(105px, 1fr)) minmax(205px, 1.6fr)
+      90px;
+  }
+}
 .language-selector select {
   font: inherit;
   color: #e4e8dc;
@@ -1382,3 +1626,90 @@ button {
     gap: 8px;
   }
 }
+
+/* Nine towers retain a bounded navigation region at the minimum window size. */
+.tower-rail {
+  min-height: 0;
+}
+.tower-rail nav {
+  max-height: 760px;
+  overflow-y: auto;
+  padding-right: 5px;
+  scrollbar-width: thin;
+}
+.element-group summary {
+  cursor: pointer;
+  color: #e0dfc7;
+  font-size: 12px;
+  padding: 10px 2px;
+}
+.element-group summary span {
+  float: right;
+  color: #a0ad97;
+}
+.element-group .tower-card {
+  margin-bottom: 8px;
+}
+.element-card-bonus {
+  display: block;
+  font-size: 10px;
+  line-height: 1.45;
+  color: #acbaa8;
+  margin: 5px 0;
+}
+.element-controls {
+  padding: 12px;
+  border: 1px solid #ffffff18;
+  border-radius: 8px;
+  margin: 10px 0;
+  background: #ffffff04;
+}
+.element-controls p,
+.tier-note {
+  font-size: 11px;
+  line-height: 1.55;
+  color: #b3bfad;
+}
+.element-controls summary {
+  cursor: pointer;
+  font-size: 11px;
+}
+.element-modes {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.element-modes button {
+  flex: 1;
+  padding: 8px 5px;
+  font-size: 10px;
+  border: 1px solid #ffffff25;
+  border-radius: 5px;
+}
+.control-panel {
+  max-height: 1080px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+@media (max-height: 900px) {
+  .tower-rail nav {
+    max-height: 670px;
+  }
+  .control-panel {
+    max-height: 850px;
+  }
+}
+
+.element-group .tower-card { display: grid; grid-template-columns: 48px minmax(0, 1fr); }
+.element-group .tower-thumb { height: 100%; min-height: 90px; }
+.element-group .tower-thumb img { height: 100%; object-fit: cover; }
+.element-group .tower-card-info { padding: 9px 7px; }
+.element-group .tower-title strong { font-size: 13px; }
+.element-group .tower-title svg { flex-shrink: 0; }
+.element-group .tower-card-info p { font-size: 8px; line-height: 1.5; }
+.element-group .element-card-bonus { font-size: 9px; line-height: 1.35; }
+.element-group .tower-state { flex-wrap: wrap; gap: 2px; font-size: 8px; }
+.element-group .tower-number { font-size: 9px; left: 5px; }
+.element-modes button { color: #dce5d4; background: #283426; cursor: pointer; }
+.element-modes button:hover:not(:disabled) { background: #394932; border-color: #b5ce9a; }
+.element-modes button:disabled { opacity: .45; cursor: default; }

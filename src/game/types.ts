@@ -1,10 +1,76 @@
 import type { Language, LocalizedText } from "../i18n";
-export const TOWER_IDS = ["wald", "pilz", "blitz"] as const;
+export const STARTER_IDS = ["wald", "pilz", "blitz"] as const;
+export const NEW_TOWER_IDS = [
+  "fels",
+  "eis",
+  "lava",
+  "wind",
+  "sonne",
+  "mond",
+] as const;
+export const TOWER_IDS = [...STARTER_IDS, ...NEW_TOWER_IDS] as const;
+export const ELEMENT_IDS = [
+  "earth",
+  "water",
+  "fire",
+  "air",
+  "light",
+  "shadow",
+] as const;
+export type ElementId = (typeof ELEMENT_IDS)[number];
+export interface ContractRules {
+  tier: number;
+  target: number;
+  reward: number;
+  rivalBase: number;
+}
+export function towerRecord<T>(create: (id: TowerId) => T): Record<TowerId, T> {
+  return Object.fromEntries(TOWER_IDS.map((id) => [id, create(id)])) as Record<
+    TowerId,
+    T
+  >;
+}
 export type TowerId = (typeof TOWER_IDS)[number];
 export const MODES = ["normal", "high", "rest"] as const;
 export type Mode = (typeof MODES)[number];
 export const SHARES = [0, 0.25, 0.5, 0.75] as const;
 export type Share = (typeof SHARES)[number];
+export const ROOM_IDS = [
+  "housing",
+  "kitchen",
+  "library",
+  "resonator",
+  "storage",
+] as const;
+export type RoomId = (typeof ROOM_IDS)[number];
+export const RESEARCH_IDS = [
+  "storage",
+  "kitchen",
+  "library",
+  "crystals",
+  "space",
+] as const;
+export type ResearchId = (typeof RESEARCH_IDS)[number];
+export const RESONANCE_MODES = ["off", "gentle", "strong"] as const;
+export type ResonanceMode = (typeof RESONANCE_MODES)[number];
+export interface RoomState {
+  level: number;
+  workers: number;
+  investedMagic: number;
+}
+export interface Colony {
+  food: number;
+  crystals: number;
+  knowledge: number;
+  minions: number;
+  supply: number;
+  settled: boolean;
+  kitchenStaffed: boolean;
+  stabilizedSeconds: number;
+  rooms: Record<TowerId, Partial<Record<RoomId, RoomState>>>;
+  research: ResearchId[];
+  resonance: Record<TowerId, ResonanceMode>;
+}
 export interface Operation {
   mode: Mode;
   instability: number;
@@ -16,6 +82,7 @@ export interface TowerState extends Operation {
 }
 export type Winner = "player" | "rival" | "tie" | "expired";
 export interface ContractResult {
+  rules: ContractRules;
   number: number;
   winner: Winner;
   playerDelivered: number;
@@ -23,8 +90,10 @@ export interface ContractResult {
   reward: number;
 }
 export interface GameState {
-  schemaVersion: 2;
-  balanceVersion: 1;
+  schemaVersion: 4;
+  elementsUnlocked: boolean;
+  colony: Colony;
+  balanceVersion: 2;
   magic: number;
   lifetimeMagic: number;
   activeSeconds: number;
@@ -36,6 +105,7 @@ export interface GameState {
   hasCompletedRecovery: boolean;
   contractsResolved: number;
   contract: {
+    rules: ContractRules;
     phase: "locked" | "preparing" | "active" | "cooldown";
     number: number;
     remaining: number;
@@ -48,6 +118,13 @@ export interface GameState {
   log: { time: number; text: LocalizedText }[];
 }
 export type GameAction =
+  | { type: "element-mode"; element: ElementId; mode: Mode }
+  | { type: "build-room" | "upgrade-room"; id: TowerId; room: RoomId }
+  | { type: "demolish-room"; id: TowerId; room: RoomId; confirmed: true }
+  | { type: "assign"; id: TowerId; room: RoomId; workers: number }
+  | { type: "recruit" }
+  | { type: "research"; research: ResearchId }
+  | { type: "resonance"; id: TowerId; mode: ResonanceMode }
   | { type: "set-language"; language: Language }
   | { type: "activate"; id: TowerId }
   | { type: "upgrade"; id: TowerId }
@@ -67,6 +144,8 @@ export interface Snapshot {
   loadBlocked: boolean;
 }
 export interface ActionResult {
+  changed?: TowerId[];
+  skippedLocked?: TowerId[];
   ok: boolean;
   error?: LocalizedText;
 }
