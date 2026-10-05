@@ -2,6 +2,12 @@
 
 Ein Fantasy-Incremental mit aktivem Management für Windows. Neun magische Türme in sechs Elementen, ein instabiler Betrieb und ein Rivale, der um dieselben Aufträge wirbt.
 
+## Download für Windows
+
+[**Turm INC v0.3.0 herunterladen**](https://github.com/OnekoSL/turm-inc/releases/tag/v0.3.0)
+
+Unter „Assets“ das Windows-x64-ZIP wählen, vollständig entpacken und `Turm INC/Turm INC.exe` starten. Deutsch und Englisch sind enthalten. Zum Spielen werden weder Node.js noch ein Entwicklungsserver benötigt.
+
 ## Neu in v0.3
 
 Fels, Eis, Lava, Wind, Sonne und Mond ergänzen Wald, Pilz und Blitz. Erde, Wasser, Feuer, Luft, Licht und Schatten besitzen lokale Boni für Betrieb oder Räume. Nach der bisherigen Einführung kannst du die sechs neuen Türme in beliebiger Reihenfolge erwecken. Elementbefehle vereinfachen gemeinsame Betriebswechsel; der Obsidianbund wächst nach vier sichtbaren Konkurrenzstufen. Bestehende Spielstände werden übernommen.

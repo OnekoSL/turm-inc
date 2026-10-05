@@ -75,4 +75,4 @@ npm run test:desktop
 npm exec vitest -- run tests/expansion-playthrough.test.ts --disableConsoleIntercept
 ```
 
-Der Quellcode wird im öffentlichen Repository [OnekoSL/turm-inc](https://github.com/OnekoSL/turm-inc) gepflegt. Das geprüfte Windows-Paket liegt lokal bereit; ein GitHub-Release mit ZIP-Download ist separat zu veröffentlichen.
+Der Quellcode wird im öffentlichen Repository [OnekoSL/turm-inc](https://github.com/OnekoSL/turm-inc) gepflegt. Das geprüfte Windows-Paket steht im [Release v0.3.0](https://github.com/OnekoSL/turm-inc/releases/tag/v0.3.0) mit SHA256-Prüfsumme zum Download bereit.
