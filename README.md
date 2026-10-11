@@ -18,6 +18,17 @@ Ein Fantasy-Incremental mit aktivem Management für Windows. Neun magische Türm
 
 Unter „Assets“ das Windows-x64-ZIP wählen, vollständig entpacken und `Turm INC/Turm INC.exe` starten. Deutsch und Englisch sind enthalten. Zum Spielen werden weder Node.js noch ein Entwicklungsserver benötigt.
 
+## Screenshots / Einblicke ins Spiel
+
+Produce magic, manage rooms and minions, research upgrades and compete for delivery contracts. Click a screenshot to view it at full size.
+
+Magie produzieren, Räume und Minions verwalten, Verbesserungen erforschen und um Lieferaufträge konkurrieren. Ein Klick auf ein Bild öffnet die volle Größe.
+
+| Turmbetrieb / Tower operation | Räume & Elemente / Rooms & elements | Forschung / Research |
+| --- | --- | --- |
+| [![Waldturm mit Betriebsarten, Ausbau und Wettbewerbsrang in v0.3.1](docs/images/v031-rang-de.png)](docs/images/v031-rang-de.png) | [![Sonnenturm mit Elementboni, Raumausbau und Minion-Zuweisung in v0.3](docs/images/v03-elements-en-small.png)](docs/images/v03-elements-en-small.png) | [![Forschungsübersicht mit dauerhaften Verbesserungen für das Netzwerk in v0.2](docs/images/v02-forschung.png)](docs/images/v02-forschung.png) |
+| Produktion und Instabilität steuern, Türme ausbauen und Aufträge gewinnen. / Balance production and instability, upgrade towers and win contracts. **v0.3.1 · Deutsch** | Wohnräume, Küche und Bibliothek bauen und Minions zuweisen. / Build living quarters, kitchens and libraries, then assign minions. **v0.3 · English** | Wissen in bessere Versorgung, höhere Erträge und zusätzliche Raumplätze investieren. / Spend knowledge on supply, production and extra room slots. **v0.2 · Deutsch** |
+
 ## Neu in v0.3.1
 
 Jeder gewonnene Auftrag erhöht den Wettbewerbsrang und macht den Obsidianbund beim nächsten Auftrag um 10 % stärker. Niederlagen, Gleichstände und abgelaufene Aufträge verändern den Rang nicht. Alle fünf Ränge wachsen Lieferziel und Prämie. Die bisherigen Stärke-Sprünge durch zusätzliche Türme entfallen. Bestehende Aufträge und Spielstände werden übernommen.
